@@ -5,25 +5,25 @@ const categories = [
   {
     id: 1,
     name: "المكيفات",
-    image: "/placeholder.svg?height=300&width=300",
+    image: "https://cdn.media.amplience.net/i/xcite/742025-XciteSeason-CBlocks-AC?img404=default&w=640&qlt=75&fmt=auto",
     link: "/categories/air-conditioners",
   },
   {
     id: 2,
     name: "التلفزيونات والشاشات",
-    image: "/placeholder.svg?height=300&width=300",
+    image: "http://cdn.media.amplience.net/i/xcite/742025-XciteSeason-CBlocks-TV?img404=default&w=640&qlt=75&fmt=auto",
     link: "/categories/tvs",
   },
   {
     id: 3,
     name: "الهواتف والاكسسوارات",
-    image: "/placeholder.svg?height=300&width=300",
+    image: "https://cdn.media.amplience.net/i/xcite/742025-XciteSeason-CBlocks-Laptop?img404=default&w=640&qlt=75&fmt=auto",
     link: "/categories/mobiles",
   },
   {
     id: 4,
     name: "الكمبيوترات والتابلت",
-    image: "/placeholder.svg?height=300&width=300",
+    image: "https://cdn.media.amplience.net/i/xcite/742025-XciteSeason-CBlocks-Laptop?img404=default&w=640&qlt=75&fmt=auto",
     link: "/categories/computers",
   },
 ]
@@ -33,7 +33,7 @@ export default function CategorySection() {
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
       {categories.map((category) => (
         <Link key={category.id} href={category.link} className="relative group overflow-hidden rounded-lg">
-          <Image
+          <img
             src={category.image || "/placeholder.svg"}
             alt={category.name}
             width={300}

@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button"
 const slides = [
   {
     id: 1,
-    image: "/placeholder.svg?height=400&width=1200",
+    image: "/itus.webp",
     title: "خصم اضافي 10 د.ك",
     subtitle: "على منتجات دايسون",
     code: "APR10",
@@ -16,7 +16,7 @@ const slides = [
   },
   {
     id: 2,
-    image: "/placeholder.svg?height=400&width=1200",
+    image: "/xc.webp",
     title: "خصومات حتى 50%",
     subtitle: "على الأجهزة المنزلية",
     code: "HOME50",
@@ -24,7 +24,7 @@ const slides = [
   },
   {
     id: 3,
-    image: "/placeholder.svg?height=400&width=1200",
+    image: "/itus.webp",
     title: "عروض الهواتف",
     subtitle: "أحدث الموديلات بأفضل الأسعار",
     code: "MOBILE25",
@@ -60,16 +60,8 @@ export default function MainSlider() {
         >
           {slides.map((slide) => (
             <div key={slide.id} className={`min-w-full relative ${slide.bgColor}`}>
-              <div className="container mx-auto px-4 py-8">
                 <div className="flex flex-col md:flex-row items-center">
-                  <div className="md:w-1/2 text-white text-center md:text-right mb-6 md:mb-0">
-                    <div className="inline-block bg-yellow-400 text-blue-900 px-3 py-1 rounded-md mb-4">إضافي فقط!</div>
-                    <h2 className="text-3xl md:text-4xl font-bold mb-2">{slide.title}</h2>
-                    <p className="text-xl mb-4">{slide.subtitle}</p>
-                    <div className="bg-red-600 inline-block px-4 py-2 rounded-md text-white font-bold text-xl">
-                      {slide.code}
-                    </div>
-                  </div>
+             
                   <div className="md:w-1/2">
                     <Image
                       src={slide.image || "/placeholder.svg"}
@@ -79,7 +71,6 @@ export default function MainSlider() {
                       className="w-full h-auto"
                     />
                   </div>
-                </div>
               </div>
             </div>
           ))}

@@ -8,7 +8,7 @@ export default function DeliveryBanner() {
           <div className="flex items-center justify-between bg-blue-900 p-4 md:p-6">
             <div className="w-1/2 md:w-2/3">
               <Image
-                src="/placeholder.svg?height=200&width=400"
+                src="/0069289_iphone-16-plus.webp"
                 alt="Xcite Delivery"
                 width={400}
                 height={200}
