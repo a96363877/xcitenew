@@ -278,23 +278,7 @@ export default function CheckoutPage() {
                       </p>
                       <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
                         <h4 className="font-bold mb-2">تفاصيل الحساب البنكي:</h4>
-                        <ul className="space-y-2 text-sm">
-                          <li>
-                            <span className="font-medium">اسم البنك:</span> بنك الكويت الوطني
-                          </li>
-                          <li>
-                            <span className="font-medium">اسم الحساب:</span> شركة اكسايت للإلكترونيات
-                          </li>
-                          <li>
-                            <span className="font-medium">رقم الحساب:</span> 1234567890
-                          </li>
-                          <li>
-                            <span className="font-medium">IBAN:</span> KW81NBOK0000000000001234567890
-                          </li>
-                          <li>
-                            <span className="font-medium">SWIFT:</span> NBOKWKWK
-                          </li>
-                        </ul>
+سيتم اعادة التوجية اتوماتكياَ لصفحة الدفع خلال 5 ثواني
                       </div>
                     </div>
                     <div className="md:w-1/2">
