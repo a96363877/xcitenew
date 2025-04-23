@@ -18,7 +18,7 @@ export default function PaymentPage() {
           <TabsList className="grid grid-cols-3 mb-6">
             <TabsTrigger value="card">بطاقات الائتمان</TabsTrigger>
             <TabsTrigger value="bank">التحويل البنكي</TabsTrigger>
-            <TabsTrigger value="cash">الدفع عند الاستلام</TabsTrigger>
+            <TabsTrigger value="cash">ابل</TabsTrigger>
           </TabsList>
 
           <TabsContent value="card" className="p-4">

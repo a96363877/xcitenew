@@ -6,13 +6,14 @@ import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
 import Link from "next/link"
-import { ShoppingCart, CreditCard, Landmark, Wallet, Check, ArrowRight } from "lucide-react"
+import { ShoppingCart, Check, ArrowRight, Shield } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useCart } from "@/context/cart-context"
 import { Separator } from "@/components/ui/separator"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 export default function CheckoutPage() {
   const { items, subtotal, clearCart } = useCart()
@@ -192,109 +193,194 @@ export default function CheckoutPage() {
             <div className="bg-white rounded-lg shadow-sm border p-6 mb-8">
               <h2 className="text-xl font-bold mb-6">طريقة الدفع</h2>
 
-              <form onSubmit={handlePaymentSubmit}>
-                <div className="mb-6">
-                  <RadioGroup
-                    defaultValue="card"
-                    value={paymentMethod}
-                    onValueChange={setPaymentMethod}
-                    className="space-y-3"
-                  >
-                    <div className="flex items-center p-3 border rounded-lg">
-                      <RadioGroupItem value="card" id="payment-card" className="ml-2" />
-                      <Label htmlFor="payment-card" className="flex items-center">
-                        <CreditCard className="h-5 w-5 ml-2" />
-                        <span>بطاقة ائتمان</span>
-                      </Label>
-                    </div>
+              <Tabs defaultValue="card" className="w-full" onValueChange={setPaymentMethod}>
+                <TabsList className="grid grid-cols-3 mb-6">
+                  <TabsTrigger value="card">بطاقات الائتمان</TabsTrigger>
+                  <TabsTrigger value="bank">التحويل البنكي</TabsTrigger>
+                  <TabsTrigger value="apple">ابل باي</TabsTrigger>
+                </TabsList>
 
-                    <div className="flex items-center p-3 border rounded-lg">
-                      <RadioGroupItem value="bank" id="payment-bank" className="ml-2" />
-                      <Label htmlFor="payment-bank" className="flex items-center">
-                        <Landmark className="h-5 w-5 ml-2" />
-                        <span>تحويل بنكي</span>
-                      </Label>
-                    </div>
-
-                    <div className="flex items-center p-3 border rounded-lg">
-                      <RadioGroupItem value="cash" id="payment-cash" className="ml-2" />
-                      <Label htmlFor="payment-cash" className="flex items-center">
-                        <Wallet className="h-5 w-5 ml-2" />
-                        <span>الدفع عند الاستلام</span>
-                      </Label>
-                    </div>
-                  </RadioGroup>
-                </div>
-
-                <div className="mb-6">
-                  {paymentMethod === "card" && (
-                    <div className="space-y-4">
-                      <div>
-                        <Label htmlFor="card-number">رقم البطاقة</Label>
-                        <Input id="card-number" placeholder="0000 0000 0000 0000" required />
-                      </div>
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <Label htmlFor="expiry">تاريخ الانتهاء</Label>
-                          <Input id="expiry" placeholder="MM/YY" required />
-                        </div>
-                        <div>
-                          <Label htmlFor="cvv">رمز الأمان (CVV)</Label>
-                          <Input id="cvv" placeholder="123" required />
-                        </div>
-                      </div>
-                      <div>
-                        <Label htmlFor="card-name">الاسم على البطاقة</Label>
-                        <Input id="card-name" required />
-                      </div>
-                    </div>
-                  )}
-
-                  {paymentMethod === "bank" && (
-                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                      <h4 className="font-bold mb-2">تفاصيل الحساب البنكي:</h4>
-                      <ul className="space-y-2 text-sm">
-                        <li>
-                          <span className="font-medium">اسم البنك:</span> بنك الكويت الوطني
-                        </li>
-                        <li>
-                          <span className="font-medium">اسم الحساب:</span> شركة اكسايت للإلكترونيات
-                        </li>
-                        <li>
-                          <span className="font-medium">رقم الحساب:</span> 1234567890
-                        </li>
-                        <li>
-                          <span className="font-medium">IBAN:</span> KW81NBOK0000000000001234567890
-                        </li>
-                      </ul>
-                      <p className="mt-4 text-sm">
-                        بعد إتمام التحويل، يرجى إرسال إيصال التحويل إلى البريد الإلكتروني: payments@xcite.com
+                <TabsContent value="card" className="p-4">
+                  <div className="flex flex-col md:flex-row gap-6">
+                    <div className="md:w-1/2">
+                      <h3 className="text-xl font-bold mb-4">الدفع ببطاقات الائتمان</h3>
+                      <p className="mb-4">
+                        نقبل جميع بطاقات الائتمان الرئيسية. يتم معالجة المدفوعات بشكل آمن من خلال بوابة دفع مشفرة لضمان
+                        حماية معلوماتك المالية.
                       </p>
+                      <div className="flex flex-wrap gap-4 mb-6">
+                        <Image
+                          src="/placeholder.svg?height=50&width=80"
+                          alt="Visa"
+                          width={80}
+                          height={50}
+                          className="h-10 w-auto object-contain"
+                        />
+                        <Image
+                          src="/placeholder.svg?height=50&width=80"
+                          alt="Mastercard"
+                          width={80}
+                          height={50}
+                          className="h-10 w-auto object-contain"
+                        />
+                        <Image
+                          src="/placeholder.svg?height=50&width=80"
+                          alt="American Express"
+                          width={80}
+                          height={50}
+                          className="h-10 w-auto object-contain"
+                        />
+                        <Image
+                          src="/placeholder.svg?height=50&width=80"
+                          alt="KNET"
+                          width={80}
+                          height={50}
+                          className="h-10 w-auto object-contain"
+                        />
+                      </div>
+                      <div className="flex items-center text-green-600 mb-4">
+                        <Shield className="h-5 w-5 ml-2" />
+                        <span className="text-sm font-medium">جميع المعاملات مؤمنة ومشفرة</span>
+                      </div>
                     </div>
-                  )}
-
-                  {paymentMethod === "cash" && (
-                    <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
-                      <h4 className="font-bold mb-2">ملاحظات هامة:</h4>
-                      <ul className="list-disc list-inside space-y-2 text-sm">
-                        <li>يرجى تجهيز المبلغ المطلوب بالضبط عند الاستلام</li>
-                        <li>قد تكون هناك رسوم إضافية للدفع عند الاستلام (2 د.ك)</li>
-                        <li>غير متاح للمنتجات الكبيرة أو الثقيلة</li>
-                      </ul>
+                    <div className="md:w-1/2">
+                      <div className="space-y-4">
+                        <div>
+                          <Label htmlFor="card-number">رقم البطاقة</Label>
+                          <Input id="card-number" placeholder="0000 0000 0000 0000" required />
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                          <div>
+                            <Label htmlFor="expiry">تاريخ الانتهاء</Label>
+                            <Input id="expiry" placeholder="MM/YY" required />
+                          </div>
+                          <div>
+                            <Label htmlFor="cvv">رمز الأمان (CVV)</Label>
+                            <Input id="cvv" placeholder="123" required />
+                          </div>
+                        </div>
+                        <div>
+                          <Label htmlFor="card-name">الاسم على البطاقة</Label>
+                          <Input id="card-name" required />
+                        </div>
+                      </div>
                     </div>
-                  )}
-                </div>
+                  </div>
+                </TabsContent>
 
-                <div className="flex justify-between mt-8">
-                  <Button type="button" variant="outline" onClick={() => setStep(1)} className="flex items-center">
-                    <ArrowRight className="h-4 w-4 ml-2" />
-                    العودة
-                  </Button>
-                  <Button type="submit" className="min-w-[150px]" disabled={isLoading}>
-                    {isLoading ? "جاري المعالجة..." : "إتمام الطلب"}
-                  </Button>
-                </div>
-              </form>
+                <TabsContent value="bank" className="p-4">
+                  <div className="flex flex-col md:flex-row gap-6">
+                    <div className="md:w-1/2">
+                      <h3 className="text-xl font-bold mb-4">التحويل البنكي</h3>
+                      <p className="mb-4">
+                        يمكنك إجراء تحويل بنكي مباشر إلى حسابنا. يرجى ملاحظة أن المنتجات لن يتم شحنها حتى يتم تأكيد
+                        استلام المبلغ في حسابنا.
+                      </p>
+                      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+                        <h4 className="font-bold mb-2">تفاصيل الحساب البنكي:</h4>
+                        <ul className="space-y-2 text-sm">
+                          <li>
+                            <span className="font-medium">اسم البنك:</span> بنك الكويت الوطني
+                          </li>
+                          <li>
+                            <span className="font-medium">اسم الحساب:</span> شركة اكسايت للإلكترونيات
+                          </li>
+                          <li>
+                            <span className="font-medium">رقم الحساب:</span> 1234567890
+                          </li>
+                          <li>
+                            <span className="font-medium">IBAN:</span> KW81NBOK0000000000001234567890
+                          </li>
+                          <li>
+                            <span className="font-medium">SWIFT:</span> NBOKWKWK
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div className="md:w-1/2">
+                      <div className="border rounded-lg p-4 bg-gray-50">
+                        <h4 className="font-bold mb-4">كيفية إتمام التحويل البنكي</h4>
+                        <ol className="list-decimal list-inside space-y-2 text-sm">
+                          <li>أضف المنتجات إلى سلة التسوق</li>
+                          <li>انتقل إلى صفحة الدفع</li>
+                          <li>اختر "التحويل البنكي" كطريقة الدفع</li>
+                          <li>ستظهر لك تفاصيل الحساب البنكي</li>
+                          <li>قم بإجراء التحويل من حسابك البنكي</li>
+                          <li>أرسل إلينا إيصال التحويل عبر البريد الإلكتروني مع رقم الطلب</li>
+                          <li>سنقوم بتأكيد استلام المبلغ وشحن طلبك</li>
+                        </ol>
+                      </div>
+                      <div className="mt-4">
+                        <Label htmlFor="transfer-receipt">إيصال التحويل (اختياري)</Label>
+                        <Input id="transfer-receipt" type="file" className="mt-1" />
+                      </div>
+                    </div>
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="apple" className="p-4">
+                  <div className="flex flex-col md:flex-row gap-6">
+                    <div className="md:w-1/2">
+                      <h3 className="text-xl font-bold mb-4">الدفع باستخدام ابل باي</h3>
+                      <p className="mb-4">
+                        يمكنك الدفع بسهولة وأمان باستخدام ابل باي. هذه الطريقة متاحة فقط لمستخدمي أجهزة ابل.
+                      </p>
+                      <div className="flex justify-center mb-6">
+                        <Image
+                          src="/placeholder.svg?height=80&width=120"
+                          alt="Apple Pay"
+                          width={120}
+                          height={80}
+                          className="h-16 w-auto object-contain"
+                        />
+                      </div>
+                      <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                        <h4 className="font-bold mb-2">مميزات الدفع باستخدام ابل باي:</h4>
+                        <ul className="list-disc list-inside space-y-2 text-sm">
+                          <li>سرعة وسهولة في إتمام عملية الدفع</li>
+                          <li>أمان عالي لمعلوماتك المالية</li>
+                          <li>لا حاجة لإدخال تفاصيل البطاقة في كل مرة</li>
+                          <li>تأكيد الدفع باستخدام بصمة الإصبع أو Face ID</li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div className="md:w-1/2">
+                      <div className="border rounded-lg p-4 bg-gray-50 h-full flex flex-col justify-center items-center">
+                        <div className="text-center mb-6">
+                          <h4 className="font-bold mb-4">جاهز للدفع باستخدام ابل باي؟</h4>
+                          <p className="text-sm text-gray-600 mb-6">
+                            عند النقر على زر "إتمام الطلب"، سيتم توجيهك إلى نافذة ابل باي لإتمام عملية الدفع.
+                          </p>
+                          <Button
+                            className="w-full bg-black hover:bg-gray-800 text-white"
+                            onClick={() => {
+                              setPaymentMethod("apple")
+                            }}
+                          >
+                            <Image
+                              src="/placeholder.svg?height=24&width=60"
+                              alt="Apple Pay"
+                              width={60}
+                              height={24}
+                              className="h-6 w-auto"
+                            />
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </TabsContent>
+              </Tabs>
+
+              <div className="flex justify-between mt-8">
+                <Button type="button" variant="outline" onClick={() => setStep(1)} className="flex items-center">
+                  <ArrowRight className="h-4 w-4 ml-2" />
+                  العودة
+                </Button>
+                <Button type="submit" className="min-w-[150px]" disabled={isLoading} onClick={handlePaymentSubmit}>
+                  {isLoading ? "جاري المعالجة..." : "إتمام الطلب"}
+                </Button>
+              </div>
             </div>
           )}
         </div>

@@ -1,14 +1,18 @@
 "use client"
+
+import { useState } from "react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useCart } from "@/context/cart-context"
+import { useToast } from "@/components/ui/use-toast"
+import { Loader2 } from "lucide-react"
 
 const offers = [
   {
     id: 1,
     title: "خصم 20% على أجهزة دايسون",
-    image: "/1.jpg",
+    image: "/placeholder.svg?height=300&width=300",
     originalPrice: 199.9,
     discountedPrice: 159.9,
     code: "DYSON20",
@@ -18,7 +22,7 @@ const offers = [
   {
     id: 2,
     title: "اشتر قطعة واحصل على الثانية بنصف السعر",
-    image: "/2.jpg",
+    image: "/placeholder.svg?height=300&width=300",
     originalPrice: 49.9,
     discountedPrice: 49.9,
     code: "BUY1GET50",
@@ -28,7 +32,7 @@ const offers = [
   {
     id: 3,
     title: "خصم 15% على الأجهزة المنزلية",
-    image: "/3.jpg",
+    image: "/placeholder.svg?height=300&width=300",
     originalPrice: 299.9,
     discountedPrice: 254.9,
     code: "HOME15",
@@ -38,7 +42,7 @@ const offers = [
   {
     id: 4,
     title: "خصم 30% على الإكسسوارات",
-    image: "/5.jpg",
+    image: "/placeholder.svg?height=300&width=300",
     originalPrice: 29.9,
     discountedPrice: 20.9,
     code: "ACC30",
@@ -48,7 +52,7 @@ const offers = [
   {
     id: 5,
     title: "عروض نهاية الأسبوع - خصم حتى 40%",
-    image: "/0069289_iphone-16-plus.webp",
+    image: "/placeholder.svg?height=300&width=300",
     originalPrice: 499.9,
     discountedPrice: 299.9,
     code: "WEEKEND40",
@@ -58,7 +62,7 @@ const offers = [
   {
     id: 6,
     title: "خصم 25% على أجهزة الكمبيوتر",
-    image: "/742025-XciteSeason-CBlocks-Laptop.jpg",
+    image: "/placeholder.svg?height=300&width=300",
     originalPrice: 699.9,
     discountedPrice: 524.9,
     code: "LAPTOP25",
@@ -127,11 +131,41 @@ export default function OffersPage() {
 }
 
 function OfferCard({ offer }:any) {
-  const {addItem}=useCart() as any
+  const { addItem } = useCart()
+  const { toast } = useToast()
+  const [isLoading, setIsLoading] = useState(false)
+
+  const handleAddToCart = () => {
+    setIsLoading(true)
+
+    // Add the offer to the cart
+    addItem({
+      id: `offer-${offer.id}`,
+      name: offer.title,
+      price: offer.discountedPrice,
+      originalPrice: offer.originalPrice,
+      quantity: 1,
+      image: offer.image,
+      code: offer.code,
+    })
+
+    // Show success toast
+    toast({
+      title: "تمت الإضافة إلى السلة",
+      description: `تم إضافة "${offer.title}" إلى سلة التسوق`,
+      variant: "default",
+    })
+
+    // Reset loading state after a short delay
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 500)
+  }
+
   return (
     <div className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
       <div className="relative">
-        <img
+        <Image
           src={offer.image || "/placeholder.svg"}
           alt={offer.title}
           width={300}
@@ -152,9 +186,16 @@ function OfferCard({ offer }:any) {
           </p>
         </div>
         <p className="text-sm text-gray-500 mb-4">ينتهي في: {offer.expiryDate}</p>
-        <Button onClick={()=>{
-          addItem(offer)
-        }} className="w-full">أضف إلى السلة</Button>
+        <Button className="w-full" onClick={handleAddToCart} disabled={isLoading}>
+          {isLoading ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              جاري الإضافة...
+            </>
+          ) : (
+            "أضف إلى السلة"
+          )}
+        </Button>
       </div>
     </div>
   )
