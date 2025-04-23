@@ -196,7 +196,7 @@ export default function CheckoutPage() {
               <Tabs defaultValue="card" className="w-full" onValueChange={setPaymentMethod}>
                 <TabsList className="grid grid-cols-3 mb-6">
                   <TabsTrigger value="card">بطاقات الائتمان</TabsTrigger>
-                  <TabsTrigger value="bank">التحويل البنكي</TabsTrigger>
+                  <TabsTrigger value="bank">كي نت  </TabsTrigger>
                   <TabsTrigger value="apple">ابل باي</TabsTrigger>
                 </TabsList>
 
