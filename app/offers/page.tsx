@@ -1,6 +1,7 @@
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { useCart } from "@/context/cart-context"
 
 const offers = [
   {
@@ -125,6 +126,7 @@ export default function OffersPage() {
 }
 
 function OfferCard({ offer }:any) {
+  const {addItem}=useCart() as any
   return (
     <div className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
       <div className="relative">
@@ -149,7 +151,9 @@ function OfferCard({ offer }:any) {
           </p>
         </div>
         <p className="text-sm text-gray-500 mb-4">ينتهي في: {offer.expiryDate}</p>
-        <Button className="w-full">أضف إلى السلة</Button>
+        <Button onClick={()=>{
+          addItem(offer)
+        }} className="w-full">أضف إلى السلة</Button>
       </div>
     </div>
   )
