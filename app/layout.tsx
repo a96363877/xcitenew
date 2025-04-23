@@ -1,9 +1,12 @@
 import type React from "react"
 import type { Metadata } from "next"
+import { Inter } from "next/font/google"
 import "./globals.css"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
 import OfferPopup from "@/components/offer-popup"
+import { CartProvider } from "@/context/cart-context"
+import { Toaster } from "@/components/ui/toaster"
 
 
 export const metadata: Metadata = {
@@ -18,11 +21,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" dir="ltr">
-      <body>
-          <OfferPopup />
-          <Header />
-          <main>{children}</main>
-          <Footer />
+      <body >
+          <CartProvider>
+            <OfferPopup />
+            <Header />
+            <main>{children}</main>
+            <Footer />
+            <Toaster />
+          </CartProvider>
       </body>
     </html>
   )

@@ -1,131 +1,202 @@
+"use client"
+
+import { useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { Truck, Clock, MapPin, HelpCircle, Phone } from "lucide-react"
+import { useRouter } from "next/navigation"
+import { Truck, ShoppingCart, Trash2 } from "lucide-react"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
+import { Button } from "@/components/ui/button"
+import { useCart } from "@/context/cart-context"
+import { Separator } from "@/components/ui/separator"
 
 export default function ShippingPage() {
+  const { items, removeItem, updateQuantity, subtotal } = useCart()
+  const router = useRouter()
+
+  // If cart is empty, show a message and redirect to home after a delay
+  useEffect(() => {
+    if (items.length === 0) {
+      const timer = setTimeout(() => {
+        router.push("/")
+      }, 5000)
+
+      return () => clearTimeout(timer)
+    }
+  }, [items.length, router])
+
+  if (items.length === 0) {
+    return (
+      <div className="container mx-auto px-4 py-16 text-center">
+        <div className="max-w-md mx-auto">
+          <ShoppingCart className="h-16 w-16 mx-auto mb-4 text-gray-400" />
+          <h1 className="text-2xl font-bold mb-2">سلة التسوق فارغة</h1>
+          <p className="text-gray-600 mb-6">لم تقم بإضافة أي منتجات إلى سلة التسوق بعد.</p>
+          <Link href="/offers">
+            <Button>تصفح العروض</Button>
+          </Link>
+          <p className="mt-4 text-sm text-gray-500">سيتم توجيهك إلى الصفحة الرئيسية خلال 5 ثوانٍ...</p>
+        </div>
+      </div>
+    )
+  }
+
+  const handleProceedToCheckout = () => {
+    router.push("/checkout")
+  }
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold mb-2">الشحن والتوصيل</h1>
-        <p className="text-gray-600">كل ما تحتاج معرفته عن خدمات الشحن والتوصيل لدينا</p>
+        <p className="text-gray-600">مراجعة المنتجات واختيار طريقة الشحن</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-        <div>
-          <Image
-            src="/placeholder.svg?height=400&width=600"
-            alt="Shipping Service"
-            width={600}
-            height={400}
-            className="rounded-lg w-full h-auto"
-          />
-        </div>
-        <div>
-          <h2 className="text-2xl font-bold mb-4">خدمة التوصيل السريع</h2>
-          <p className="mb-4">
-            نحن نفخر بتقديم خدمة توصيل سريعة وموثوقة لجميع عملائنا. مع فريق التوصيل المتخصص لدينا، يمكنك الاعتماد علينا
-            لتوصيل مشترياتك بأمان وفي الوقت المحدد.
-          </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-            <div className="flex items-start">
-              <div className="bg-blue-100 p-2 rounded-full mr-3">
-                <Truck className="h-6 w-6 text-blue-900" />
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="lg:col-span-2">
+          <div className="bg-white rounded-lg shadow-sm border p-6 mb-8">
+            <h2 className="text-xl font-bold mb-4">المنتجات في سلة التسوق</h2>
+
+            {items.map((item) => (
+              <div key={item.id} className="flex gap-4 py-4 border-b last:border-0">
+                <div className="w-20 h-20 flex-shrink-0">
+                  <Image
+                    src={item.image || "/placeholder.svg"}
+                    alt={item.name}
+                    width={80}
+                    height={80}
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-medium">{item.name}</h3>
+                  {item.originalPrice && (
+                    <div className="flex items-center mt-1">
+                      <span className="text-gray-500 line-through text-sm mr-2">{item.originalPrice} د.ك</span>
+                      <span className="text-red-600 font-bold">{item.price} د.ك</span>
+                    </div>
+                  )}
+                  {item.code && (
+                    <div className="text-sm text-blue-900 mt-1">
+                      كود الخصم: <span className="font-bold">{item.code}</span>
+                    </div>
+                  )}
+                </div>
+                <div className="flex flex-col items-end">
+                  <div className="flex items-center mb-2">
+                    <button
+                      onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                      className="w-8 h-8 flex items-center justify-center border rounded-md"
+                    >
+                      -
+                    </button>
+                    <span className="mx-2 w-8 text-center">{item.quantity}</span>
+                    <button
+                      onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                      className="w-8 h-8 flex items-center justify-center border rounded-md"
+                    >
+                      +
+                    </button>
+                  </div>
+                  <button onClick={() => removeItem(item.id)} className="text-red-600 text-sm flex items-center">
+                    <Trash2 className="h-4 w-4 mr-1" />
+                    إزالة
+                  </button>
+                </div>
               </div>
-              <div>
-                <h3 className="font-bold mb-1">توصيل سريع</h3>
-                <p className="text-sm text-gray-600">توصيل في نفس اليوم أو اليوم التالي للمنتجات المختارة</p>
+            ))}
+          </div>
+
+          <div className="bg-white rounded-lg shadow-sm border p-6 mb-8">
+            <h2 className="text-xl font-bold mb-4">خيارات الشحن</h2>
+
+            <div className="space-y-4">
+              <div className="flex items-start p-4 border rounded-lg">
+                <input
+                  type="radio"
+                  id="standard-shipping"
+                  name="shipping-option"
+                  className="mt-1 mr-2"
+                  defaultChecked
+                />
+                <label htmlFor="standard-shipping" className="flex-1">
+                  <div className="font-medium">التوصيل القياسي</div>
+                  <div className="text-sm text-gray-600">2-3 أيام عمل</div>
+                  <div className="text-sm font-medium text-green-600 mt-1">مجاناً للطلبات فوق 20 د.ك</div>
+                </label>
+                <div className="font-bold">2.000 د.ك</div>
               </div>
-            </div>
-            <div className="flex items-start">
-              <div className="bg-blue-100 p-2 rounded-full mr-3">
-                <Clock className="h-6 w-6 text-blue-900" />
+
+              <div className="flex items-start p-4 border rounded-lg">
+                <input type="radio" id="express-shipping" name="shipping-option" className="mt-1 mr-2" />
+                <label htmlFor="express-shipping" className="flex-1">
+                  <div className="font-medium">التوصيل السريع</div>
+                  <div className="text-sm text-gray-600">خلال 24 ساعة</div>
+                </label>
+                <div className="font-bold">5.000 د.ك</div>
               </div>
-              <div>
-                <h3 className="font-bold mb-1">تتبع الطلب</h3>
-                <p className="text-sm text-gray-600">تتبع طلبك في الوقت الفعلي من خلال تطبيقنا أو موقعنا</p>
-              </div>
-            </div>
-            <div className="flex items-start">
-              <div className="bg-blue-100 p-2 rounded-full mr-3">
-                <MapPin className="h-6 w-6 text-blue-900" />
-              </div>
-              <div>
-                <h3 className="font-bold mb-1">تغطية واسعة</h3>
-                <p className="text-sm text-gray-600">نغطي جميع المناطق في الكويت</p>
-              </div>
-            </div>
-            <div className="flex items-start">
-              <div className="bg-blue-100 p-2 rounded-full mr-3">
-                <HelpCircle className="h-6 w-6 text-blue-900" />
-              </div>
-              <div>
-                <h3 className="font-bold mb-1">دعم العملاء</h3>
-                <p className="text-sm text-gray-600">فريق دعم متاح على مدار الساعة لمساعدتك</p>
+
+              <div className="flex items-start p-4 border rounded-lg">
+                <input type="radio" id="store-pickup" name="shipping-option" className="mt-1 mr-2" />
+                <label htmlFor="store-pickup" className="flex-1">
+                  <div className="font-medium">استلام من المتجر</div>
+                  <div className="text-sm text-gray-600">متاح خلال ساعات عمل المتجر</div>
+                  <div className="text-sm font-medium text-green-600 mt-1">مجاناً</div>
+                </label>
+                <div className="font-bold">0.000 د.ك</div>
               </div>
             </div>
           </div>
-          <div className="bg-blue-900 text-white p-4 rounded-lg">
-            <div className="flex items-center">
-              <Phone className="h-6 w-6 mr-2" />
+
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-8">
+            <div className="flex items-start">
+              <Truck className="h-5 w-5 text-blue-900 ml-3 mt-0.5" />
               <div>
-                <p className="font-bold">للاستفسار عن الشحن والتوصيل</p>
-                <p className="text-sm">اتصل بنا على: 1800-555-123</p>
+                <p className="font-medium">معلومات هامة عن الشحن</p>
+                <p className="text-sm text-gray-700 mt-1">
+                  يتم شحن جميع الطلبات من مخازننا في الكويت. الأوقات المذكورة للتوصيل هي تقديرية وقد تختلف حسب المنطقة
+                  والظروف.
+                </p>
               </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="lg:col-span-1">
+          <div className="bg-white rounded-lg shadow-sm border p-6 sticky top-20">
+            <h2 className="text-xl font-bold mb-4">ملخص الطلب</h2>
+
+            <div className="space-y-3 mb-4">
+              <div className="flex justify-between">
+                <span>المجموع الفرعي</span>
+                <span>{subtotal.toFixed(2)} د.ك</span>
+              </div>
+              <div className="flex justify-between">
+                <span>رسوم الشحن</span>
+                <span>2.000 د.ك</span>
+              </div>
+              <Separator className="my-2" />
+              <div className="flex justify-between font-bold text-lg">
+                <span>الإجمالي</span>
+                <span>{(subtotal + 2).toFixed(2)} د.ك</span>
+              </div>
+            </div>
+
+            <Button className="w-full mb-4" size="lg" onClick={handleProceedToCheckout}>
+              متابعة إلى الدفع
+            </Button>
+
+            <div className="text-center text-sm text-gray-500">
+              بالضغط على "متابعة إلى الدفع"، أنت توافق على{" "}
+              <Link href="/terms" className="text-blue-900 hover:underline">
+                الشروط والأحكام
+              </Link>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="bg-gray-50 p-6 rounded-lg mb-12">
-        <h2 className="text-2xl font-bold mb-6 text-center">رسوم الشحن والتوصيل</h2>
-        <div className="overflow-x-auto">
-          <table className="w-full border-collapse">
-            <thead>
-              <tr className="bg-blue-900 text-white">
-                <th className="p-3 text-right">المنطقة</th>
-                <th className="p-3 text-right">رسوم التوصيل العادي</th>
-                <th className="p-3 text-right">رسوم التوصيل السريع</th>
-                <th className="p-3 text-right">الوقت المتوقع للتوصيل</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b">
-                <td className="p-3">العاصمة</td>
-                <td className="p-3">مجاناً للطلبات فوق 20 د.ك</td>
-                <td className="p-3">2 د.ك</td>
-                <td className="p-3">1-2 يوم عمل</td>
-              </tr>
-              <tr className="border-b bg-gray-100">
-                <td className="p-3">حولي</td>
-                <td className="p-3">مجاناً للطلبات فوق 20 د.ك</td>
-                <td className="p-3">2 د.ك</td>
-                <td className="p-3">1-2 يوم عمل</td>
-              </tr>
-              <tr className="border-b">
-                <td className="p-3">الفروانية</td>
-                <td className="p-3">مجاناً للطلبات فوق 25 د.ك</td>
-                <td className="p-3">3 د.ك</td>
-                <td className="p-3">1-3 يوم عمل</td>
-              </tr>
-              <tr className="border-b bg-gray-100">
-                <td className="p-3">الأحمدي</td>
-                <td className="p-3">مجاناً للطلبات فوق 30 د.ك</td>
-                <td className="p-3">4 د.ك</td>
-                <td className="p-3">2-3 يوم عمل</td>
-              </tr>
-              <tr>
-                <td className="p-3">الجهراء</td>
-                <td className="p-3">مجاناً للطلبات فوق 30 د.ك</td>
-                <td className="p-3">4 د.ك</td>
-                <td className="p-3">2-3 يوم عمل</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <div className="mb-12">
+      <div className="mt-12">
         <h2 className="text-2xl font-bold mb-6 text-center">الأسئلة الشائعة حول الشحن والتوصيل</h2>
         <Accordion type="single" collapsible className="w-full">
           <AccordionItem value="item-1">
@@ -139,44 +210,17 @@ export default function ShippingPage() {
             <AccordionTrigger>ما هي مدة التوصيل المتوقعة؟</AccordionTrigger>
             <AccordionContent>
               تختلف مدة التوصيل حسب موقعك والمنتجات التي طلبتها. بشكل عام، نقدم خدمة التوصيل في نفس اليوم للمنتجات
-              المتوفرة في المخزون والمناطق القريبة، وخلال 1-3 أيام عمل للمناطق الأخرى. يمكنك الاطلاع على الوقت المتوقع
-              للتوصيل أثناء إتمام عملية الشراء.
+              المتوفرة في المخزون والمناطق القريبة، وخلال 1-3 أيام عمل للمناطق الأخرى.
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-3">
             <AccordionTrigger>هل يمكنني تغيير عنوان التوصيل بعد تقديم الطلب؟</AccordionTrigger>
             <AccordionContent>
               نعم، يمكنك تغيير عنوان التوصيل طالما أن طلبك لم يتم شحنه بعد. للقيام بذلك، يرجى الاتصال بخدمة العملاء في
-              أقرب وقت ممكن وتزويدهم برقم طلبك والعنوان الجديد. يرجى ملاحظة أنه قد تكون هناك رسوم إضافية إذا كان العنوان
-              الجديد في منطقة مختلفة.
-            </AccordionContent>
-          </AccordionItem>
-          <AccordionItem value="item-4">
-            <AccordionTrigger>ماذا يحدث إذا لم أكن متواجداً عند التوصيل؟</AccordionTrigger>
-            <AccordionContent>
-              إذا لم تكن متواجداً عند التوصيل، سيحاول مندوب التوصيل الاتصال بك لترتيب وقت آخر مناسب. إذا تعذر الوصول
-              إليك، سنترك إشعاراً ونحاول التوصيل مرة أخرى في اليوم التالي. بعد محاولتين غير ناجحتين، سيتم إعادة الطلب إلى
-              مخازننا وسنتواصل معك لترتيب استلام الطلب أو إعادة التوصيل.
-            </AccordionContent>
-          </AccordionItem>
-          <AccordionItem value="item-5">
-            <AccordionTrigger>هل تقدمون خدمة التوصيل الدولي؟</AccordionTrigger>
-            <AccordionContent>
-              حالياً، نقدم خدمة التوصيل داخل الكويت فقط. نحن نعمل على توسيع خدماتنا لتشمل دول مجلس التعاون الخليجي في
-              المستقبل القريب. يرجى متابعة موقعنا وحساباتنا على وسائل التواصل الاجتماعي للحصول على آخر التحديثات.
+              أقرب وقت ممكن وتزويدهم برقم طلبك والعنوان الجديد.
             </AccordionContent>
           </AccordionItem>
         </Accordion>
-      </div>
-
-      <div className="text-center">
-        <h2 className="text-2xl font-bold mb-4">هل لديك المزيد من الأسئلة؟</h2>
-        <p className="mb-6">فريق خدمة العملاء لدينا متاح للإجابة على جميع استفساراتك</p>
-        <Link href="/contact">
-          <button className="bg-blue-900 text-white px-6 py-3 rounded-md hover:bg-blue-800 transition-colors">
-            تواصل معنا
-          </button>
-        </Link>
       </div>
     </div>
   )

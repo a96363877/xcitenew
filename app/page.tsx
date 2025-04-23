@@ -9,18 +9,15 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
       <MainSlider />
-
       <div className="container mx-auto px-4 py-6">
         <CategorySection />
       </div>
-
       <DeliveryBanner />
-
       <div className="container mx-auto px-4 py-6">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           <Link href="/categories/digital-cards" className="relative group overflow-hidden rounded-lg">
             <Image
-              src="/placeholder.svg?height=300&width=300"
+              src="/742025-XciteSeason-CBlocks-dCards_1.jpg"
               alt="Digital Cards"
               width={300}
               height={300}
@@ -32,7 +29,7 @@ export default function Home() {
           </Link>
           <Link href="/categories/gaming" className="relative group overflow-hidden rounded-lg">
             <Image
-              src="/placeholder.svg?height=300&width=300"
+              src="/742025-XciteSeason-CBlocks-Gaming.jpg"
               alt="Gaming"
               width={300}
               height={300}
@@ -44,7 +41,7 @@ export default function Home() {
           </Link>
           <Link href="/categories/small-appliances" className="relative group overflow-hidden rounded-lg">
             <Image
-              src="/placeholder.svg?height=300&width=300"
+              src="/742025-XciteSeason-CBlocks-AC.webp"
               alt="Small Appliances"
               width={300}
               height={300}
@@ -56,7 +53,7 @@ export default function Home() {
           </Link>
           <Link href="/categories/large-appliances" className="relative group overflow-hidden rounded-lg">
             <Image
-              src="/placeholder.svg?height=300&width=300"
+              src="/742025-XciteSeason-CBlocks-TV.jpg"
               alt="Large Appliances"
               width={300}
               height={300}

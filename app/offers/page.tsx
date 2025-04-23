@@ -6,7 +6,7 @@ const offers = [
   {
     id: 1,
     title: "خصم 20% على أجهزة دايسون",
-    image: "/placeholder.svg?height=300&width=300",
+    image: "/1.jpg",
     originalPrice: 199.9,
     discountedPrice: 159.9,
     code: "DYSON20",
@@ -16,7 +16,7 @@ const offers = [
   {
     id: 2,
     title: "اشتر قطعة واحصل على الثانية بنصف السعر",
-    image: "/placeholder.svg?height=300&width=300",
+    image: "/2.jpg",
     originalPrice: 49.9,
     discountedPrice: 49.9,
     code: "BUY1GET50",
@@ -26,7 +26,7 @@ const offers = [
   {
     id: 3,
     title: "خصم 15% على الأجهزة المنزلية",
-    image: "/placeholder.svg?height=300&width=300",
+    image: "/3.jpg",
     originalPrice: 299.9,
     discountedPrice: 254.9,
     code: "HOME15",
@@ -36,7 +36,7 @@ const offers = [
   {
     id: 4,
     title: "خصم 30% على الإكسسوارات",
-    image: "/placeholder.svg?height=300&width=300",
+    image: "/5.jpg",
     originalPrice: 29.9,
     discountedPrice: 20.9,
     code: "ACC30",
@@ -46,7 +46,7 @@ const offers = [
   {
     id: 5,
     title: "عروض نهاية الأسبوع - خصم حتى 40%",
-    image: "/placeholder.svg?height=300&width=300",
+    image: "/0069289_iphone-16-plus.webp",
     originalPrice: 499.9,
     discountedPrice: 299.9,
     code: "WEEKEND40",
@@ -56,7 +56,7 @@ const offers = [
   {
     id: 6,
     title: "خصم 25% على أجهزة الكمبيوتر",
-    image: "/placeholder.svg?height=300&width=300",
+    image: "/742025-XciteSeason-CBlocks-Laptop.jpg",
     originalPrice: 699.9,
     discountedPrice: 524.9,
     code: "LAPTOP25",
@@ -124,11 +124,11 @@ export default function OffersPage() {
   )
 }
 
-function OfferCard({ offer }) {
+function OfferCard({ offer }:any) {
   return (
     <div className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
       <div className="relative">
-        <Image
+        <img
           src={offer.image || "/placeholder.svg"}
           alt={offer.title}
           width={300}

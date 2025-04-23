@@ -5,16 +5,16 @@ import { Input } from "@/components/ui/input"
 
 export default function Header() {
   return (
-    <header className="bg-white shadow-sm sticky top-0 z-50">
+    <header className="bg-[#00355f] shadow-sm sticky top-0 z-50 text-white">
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between py-2 border-b">
+        <div className="flex items-center justify-between py-2 ">
           <div className="flex items-center space-x-4">
             <Button variant="ghost" size="icon" className="md:hidden">
               <Menu className="h-5 w-5" />
             </Button>
             <Link href="/" className="flex items-center">
-              <span className="text-2xl font-bold text-blue-900">Xcite</span>
-            </Link>
+<img src="vercel.svg" alt="" width={70}/>          
+  </Link>
           </div>
 
           <div className="hidden md:flex flex-1 max-w-xl mx-4">
@@ -46,7 +46,7 @@ export default function Header() {
         </div>
 
         <nav className="py-2">
-          <ul className="flex space-x-6 text-sm">
+          <ul className="flex space-x-6 text-sm hidden">
             <li>
               <Link href="/" className="text-gray-700 hover:text-blue-900">
                 الرئيسية

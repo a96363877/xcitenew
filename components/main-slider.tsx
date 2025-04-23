@@ -62,13 +62,13 @@ export default function MainSlider() {
             <div key={slide.id} className={`min-w-full relative ${slide.bgColor}`}>
                 <div className="flex flex-col md:flex-row items-center">
              
-                  <div className="md:w-1/2">
+                  <div className="md:w-1/2 m-0 p-0 ">
                     <Image
                       src={slide.image || "/placeholder.svg"}
                       alt={slide.title}
                       width={600}
                       height={300}
-                      className="w-full h-auto"
+                      className="w-full h-full"
                     />
                   </div>
               </div>

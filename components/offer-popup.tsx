@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from "@/components/ui/dialog"
 
 export default function OfferPopup() {
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(true)
 
   useEffect(() => {
     // Check if the popup has been shown before
@@ -43,8 +43,8 @@ export default function OfferPopup() {
             <p className="mb-4">
               استخدم الكود: <span className="font-bold">WELCOME15</span>
             </p>
-            <Image
-              src="/placeholder.svg?height=200&width=300"
+            <img
+              src="/0069289_iphone-16-plus.webp"
               alt="Special Offer"
               width={300}
               height={200}
