@@ -170,8 +170,8 @@ export default function PaymentPage() {
     } else if (paymentMethod === "knet") {
       return (
         <div className="text-center">
-          <Image
-            src="/placeholder.svg?height=100&width=200"
+          <img
+            src="/knet.png"
             alt="KNET"
             width={200}
             height={100}
