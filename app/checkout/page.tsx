@@ -217,14 +217,14 @@ export default function CheckoutPage() {
                           className="h-10 w-auto object-contain"
                         />
                         <Image
-                          src="/mas.svg"
+                          src="/master.svg"
                           alt="Mastercard"
                           width={80}
                           height={50}
                           className="h-10 w-auto object-contain"
                         />
                         <Image
-                          src="/exp.svg"
+                          src="/amex.svg"
                           alt="American Express"
                           width={80}
                           height={50}
