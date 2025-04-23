@@ -31,28 +31,28 @@ export default function PaymentPage() {
                 </p>
                 <div className="flex flex-wrap gap-4 mb-6">
                   <Image
-                    src="/placeholder.svg?height=50&width=80"
+                    src="/visa.svg"
                     alt="Visa"
                     width={80}
                     height={50}
                     className="h-10 w-auto object-contain"
                   />
                   <Image
-                    src="/placeholder.svg?height=50&width=80"
+                    src="/mas.svg"
                     alt="Mastercard"
                     width={80}
                     height={50}
                     className="h-10 w-auto object-contain"
                   />
                   <Image
-                    src="/placeholder.svg?height=50&width=80"
+                    src="/amex.svg"
                     alt="American Express"
                     width={80}
                     height={50}
                     className="h-10 w-auto object-contain"
                   />
-                  <Image
-                    src="/placeholder.svg?height=50&width=80"
+                  <img
+                    src="/knet.png"
                     alt="KNET"
                     width={80}
                     height={50}
