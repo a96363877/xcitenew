@@ -15,7 +15,7 @@ export default function Home() {
       <DeliveryBanner />
       <div className="container mx-auto px-4 py-6">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          <Link href="/categories/digital-cards" className="relative group overflow-hidden rounded-lg">
+          <Link href="/offers" className="relative group overflow-hidden rounded-lg">
             <Image
               src="/742025-XciteSeason-CBlocks-dCards_1.jpg"
               alt="Digital Cards"
@@ -27,7 +27,7 @@ export default function Home() {
               <h3 className="text-sm md:text-base">البطاقات الرقمية</h3>
             </div>
           </Link>
-          <Link href="/categories/gaming" className="relative group overflow-hidden rounded-lg">
+          <Link href="/offers" className="relative group overflow-hidden rounded-lg">
             <Image
               src="/742025-XciteSeason-CBlocks-Gaming.jpg"
               alt="Gaming"
@@ -39,7 +39,7 @@ export default function Home() {
               <h3 className="text-sm md:text-base">الألعاب</h3>
             </div>
           </Link>
-          <Link href="/categories/small-appliances" className="relative group overflow-hidden rounded-lg">
+          <Link href="/offers" className="relative group overflow-hidden rounded-lg">
             <Image
               src="/742025-XciteSeason-CBlocks-AC.webp"
               alt="Small Appliances"
@@ -51,7 +51,7 @@ export default function Home() {
               <h3 className="text-sm md:text-base">الأجهزة المنزلية الصغيرة</h3>
             </div>
           </Link>
-          <Link href="/categories/large-appliances" className="relative group overflow-hidden rounded-lg">
+          <Link href="/offers" className="relative group overflow-hidden rounded-lg">
             <Image
               src="/742025-XciteSeason-CBlocks-TV.jpg"
               alt="Large Appliances"
