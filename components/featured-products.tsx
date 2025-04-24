@@ -111,7 +111,7 @@ export default function FeaturedProducts() {
     setCurrentIndex((prev) => (prev === 0 ? featuredProducts.length - count : prev - 1))
   }
 
-  const handleAddToCart = (product) => {
+  const handleAddToCart = (product: { id: any; name: any; image: any; price: any; originalPrice: any; rating?: number; reviewCount?: number; category?: string }) => {
     setLoadingStates((prev) => ({ ...prev, [product.id]: true }))
 
     setTimeout(() => {
