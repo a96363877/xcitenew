@@ -38,11 +38,11 @@ export default function Home() {
           <img src="https://xcite.a.bigcontent.io/v1/static/742025-XciteSeason-Generic-EN?img404=default&w=750&qlt=75&fmt=auto" alt="Promo TV"  className="w-full h-24" />
 
           {/* Promo 2 */}
-          <img src="https://xcite.a.bigcontent.io/v1/static/742025-XciteSeason-Generic-EN?img404=default&w=750&qlt=75&fmt=auto" alt="Promo TV"  className="w-full h-24" />
+          <img src="https://cdn.media.amplience.net/i/xcite/2242025-Edge60-Fusion-DP-EN?img404=default&w=640&qlt=75&fmt=auto" alt="Promo TV"  className="w-full h-24" />
          
 
           {/* Promo 3 */}
-          <img src="https://xcite.a.bigcontent.io/v1/static/742025-XciteSeason-Generic-EN?img404=default&w=750&qlt=75&fmt=auto" alt="Promo TV"  className="w-full h-24" />
+          <img src="https://cdn.media.amplience.net/i/xcite/HONGQI_APRIL_DP_EN?img404=default&w=640&qlt=75&fmt=auto" alt="Promo TV"  className="w-full h-24" />
 
         </div>
 
