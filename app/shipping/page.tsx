@@ -60,7 +60,7 @@ export default function ShippingPage() {
             {items.map((item) => (
               <div key={item.id} className="flex gap-4 py-4 border-b last:border-0">
                 <div className="w-20 h-20 flex-shrink-0">
-                  <Image
+                  <img
                     src={item.image || "/placeholder.svg"}
                     alt={item.name}
                     width={80}

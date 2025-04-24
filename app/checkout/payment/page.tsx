@@ -2,380 +2,118 @@
 
 import type React from "react"
 
-import { useState } from "react"
-import { useRouter, useSearchParams } from "next/navigation"
-import Link from "next/link"
+import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
 import Image from "next/image"
-import { ChevronRight, CreditCard, Shield, Check, Clock } from "lucide-react"
+import Link from "next/link"
+import { ShoppingCart, CreditCard, Check, ArrowRight, Shield, AlertTriangle } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { useCart } from "@/context/cart-context"
+import { Separator } from "@/components/ui/separator"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import OtpInput from "@/components/otp-input"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Alert, AlertDescription } from "@/components/ui/alert"
+import { useToast } from "@/components/ui/use-toast"
 
-export default function PaymentPage() {
+export default function CheckoutPage() {
+  const { items, subtotal, clearCart } = useCart()
   const router = useRouter()
-  const searchParams = useSearchParams()
-  const paymentMethod = searchParams.get("method") || "credit-card"
+  const { toast } = useToast()
+  const [step, setStep] = useState(1)
+  const [isLoading, setIsLoading] = useState(false)
+  const [paymentMethod, setPaymentMethod] = useState("card")
+  const [isApplePayAvailable, setIsApplePayAvailable] = useState(false)
+  const [shippingInfo, setShippingInfo] = useState({
+    fullName: "",
+    address: "",
+    city: "",
+    phone: "",
+    email: "",
+  })
 
-  const [cardNumber, setCardNumber] = useState("")
-  const [cardName, setCardName] = useState("")
-  const [expiryDate, setExpiryDate] = useState("")
-  const [cvv, setCvv] = useState("")
-  const [showOtp, setShowOtp] = useState(false)
-  const [otp, setOtp] = useState("")
-  const [isProcessing, setIsProcessing] = useState(false)
-  const [isComplete, setIsComplete] = useState(false)
+  // Check if Apple Pay is available
+  useEffect(() => {
+    // This is a simple check - in a real app, you'd use the Apple Pay JS API
+    const checkApplePayAvailability = () => {
+      // Check if we're on a device that might support Apple Pay
+      const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
+      const isAppleDevice = /iPhone|iPad|iPod|Mac/.test(navigator.userAgent)
 
-  const formatCardNumber = (value: string) => {
-    const v = value.replace(/\s+/g, "").replace(/[^0-9]/gi, "")
-    const matches = v.match(/\d{4,16}/g)
-    const match = (matches && matches[0]) || ""
-    const parts = []
-
-    for (let i = 0, len = match.length; i < len; i += 4) {
-      parts.push(match.substring(i, i + 4))
+      setIsApplePayAvailable(isSafari && isAppleDevice)
     }
 
-    if (parts.length) {
-      return parts.join(" ")
-    } else {
-      return value
+    checkApplePayAvailability()
+  }, [])
+
+  // If cart is empty, redirect to home
+  useEffect(() => {
+    if (items.length === 0) {
+      router.push("/")
     }
-  }
+  }, [items.length, router])
 
-  const formatExpiryDate = (value: string) => {
-    const v = value.replace(/\s+/g, "").replace(/[^0-9]/gi, "")
-
-    if (v.length >= 3) {
-      return `${v.substring(0, 2)}/${v.substring(2, 4)}`
-    }
-
-    return value
-  }
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleShippingSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    setIsProcessing(true)
+    setIsLoading(true)
 
-    // Simulate processing delay
+    // Simulate form submission delay
     setTimeout(() => {
-      setIsProcessing(false)
-      setShowOtp(true)
-    }, 2000)
+      setIsLoading(false)
+      setStep(2)
+    }, 1000)
   }
 
-  const handleOtpSubmit = () => {
-    setIsProcessing(true)
+  const handlePaymentSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsLoading(true)
 
-    // Simulate processing delay
-    setTimeout(() => {
-      setIsProcessing(false)
-      setIsComplete(true)
+    // Handle different payment methods
+    if (paymentMethod === "knet") {
+      // Redirect to KNET payment gateway
+      toast({
+        title: "جاري التحويل إلى بوابة الدفع KNET",
+        description: "سيتم تحويلك إلى صفحة الدفع KNET لإتمام عملية الدفع",
+      })
 
-      // Redirect to success page after 2 seconds
+      // Simulate redirect delay
       setTimeout(() => {
-        router.push("/checkout/success")
-      }, 2000)
-    }, 2000)
-  }
-
-  const renderPaymentForm = () => {
-    if (paymentMethod === "credit-card") {
-      return (
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <Label htmlFor="cardNumber">رقم البطاقة</Label>
-            <div className="relative">
-              <Input
-                id="cardNumber"
-                value={cardNumber}
-                onChange={(e) => setCardNumber(formatCardNumber(e.target.value))}
-                placeholder="0000 0000 0000 0000"
-                maxLength={19}
-                className="pl-10 mt-1"
-                required
-              />
-              <CreditCard className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-            </div>
-          </div>
-
-          <div>
-            <Label htmlFor="cardName">الاسم على البطاقة</Label>
-            <Input
-              id="cardName"
-              value={cardName}
-              onChange={(e) => setCardName(e.target.value)}
-              placeholder="الاسم كما يظهر على البطاقة"
-              className="mt-1"
-              required
-            />
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <Label htmlFor="expiryDate">تاريخ الانتهاء</Label>
-              <Input
-                id="expiryDate"
-                value={expiryDate}
-                onChange={(e) => setExpiryDate(formatExpiryDate(e.target.value))}
-                placeholder="MM/YY"
-                maxLength={5}
-                className="mt-1"
-                required
-              />
-            </div>
-            <div>
-              <Label htmlFor="cvv">رمز الأمان (CVV)</Label>
-              <Input
-                id="cvv"
-                value={cvv}
-                onChange={(e) => setCvv(e.target.value.replace(/[^0-9]/g, ""))}
-                placeholder="123"
-                maxLength={4}
-                className="mt-1"
-                required
-              />
-            </div>
-          </div>
-
-          <div className="flex items-center text-green-600 text-sm">
-            <Shield className="h-4 w-4 ml-2" />
-            <span>جميع المعاملات مؤمنة ومشفرة</span>
-          </div>
-
-          <Button type="submit" className="w-full" size="lg" disabled={isProcessing}>
-            {isProcessing ? (
-              <span className="flex items-center">
-                <svg
-                  className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                  ></path>
-                </svg>
-                جاري المعالجة...
-              </span>
-            ) : (
-              "تأكيد الدفع"
-            )}
-          </Button>
-        </form>
-      )
-    } else if (paymentMethod === "knet") {
-      return (
-        <div className="text-center">
-          <img
-            src="/knet.png"
-            alt="KNET"
-            width={200}
-            height={100}
-            className="mx-auto mb-6"
-          />
-          <p className="mb-6">سيتم تحويلك إلى صفحة الدفع الخاصة بكي نت لإتمام عملية الدفع</p>
-          <Button className="w-full" size="lg" onClick={handleSubmit} disabled={isProcessing}>
-            {isProcessing ? (
-              <span className="flex items-center">
-                <svg
-                  className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                  ></path>
-                </svg>
-                جاري التحويل...
-              </span>
-            ) : (
-              "الانتقال إلى صفحة الدفع"
-            )}
-          </Button>
-        </div>
-      )
-    } else if (paymentMethod === "bank-transfer") {
-      return (
-        <div>
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-            <h3 className="font-bold mb-2">تفاصيل الحساب البنكي:</h3>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <span className="font-medium">اسم البنك:</span> بنك الكويت الوطني
-              </li>
-              <li>
-                <span className="font-medium">اسم الحساب:</span> شركة اكسايت للإلكترونيات
-              </li>
-              <li>
-                <span className="font-medium">رقم الحساب:</span> 1234567890
-              </li>
-              <li>
-                <span className="font-medium">IBAN:</span> KW81NBOK0000000000001234567890
-              </li>
-              <li>
-                <span className="font-medium">SWIFT:</span> NBOKWKWK
-              </li>
-            </ul>
-          </div>
-
-          <div className="mb-6">
-            <p className="mb-4">يرجى تحويل المبلغ المطلوب إلى الحساب المذكور أعلاه، ثم إرسال إيصال التحويل إلينا.</p>
-            <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
-              <p className="text-gray-500 mb-2">قم بإرفاق إيصال التحويل</p>
-              <Button variant="outline" className="mx-auto">
-                تحميل الإيصال
-              </Button>
-            </div>
-          </div>
-
-          <Button className="w-full" size="lg" onClick={handleSubmit} disabled={isProcessing}>
-            {isProcessing ? (
-              <span className="flex items-center">
-                <svg
-                  className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                  ></path>
-                </svg>
-                جاري المعالجة...
-              </span>
-            ) : (
-              "تأكيد الطلب"
-            )}
-          </Button>
-        </div>
-      )
-    } else if (paymentMethod === "cash-on-delivery") {
-      return (
-        <div>
-          <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6">
-            <h3 className="font-bold mb-2">ملاحظات هامة:</h3>
-            <ul className="list-disc list-inside space-y-2 text-sm">
-              <li>سيتم إضافة رسوم إضافية قدرها 2 د.ك للدفع عند الاستلام</li>
-              <li>يرجى تجهيز المبلغ المطلوب بالضبط عند الاستلام</li>
-              <li>في حال عدم التواجد عند التوصيل، سيتم إلغاء الطلب</li>
-            </ul>
-          </div>
-
-          <Button className="w-full" size="lg" onClick={handleSubmit} disabled={isProcessing}>
-            {isProcessing ? (
-              <span className="flex items-center">
-                <svg
-                  className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                  ></path>
-                </svg>
-                جاري المعالجة...
-              </span>
-            ) : (
-              "تأكيد الطلب"
-            )}
-          </Button>
-        </div>
-      )
+        // In a real app, you would redirect to the actual KNET payment URL
+        window.location.href = "/knet-payment-gateway"
+      }, 1500)
+      return
     }
 
-    return null
+    if (paymentMethod === "apple" && !isApplePayAvailable) {
+      setIsLoading(false)
+      toast({
+        title: "خطأ في الدفع",
+        description: "خدمة Apple Pay غير متوفرة على هذا الجهاز. يرجى اختيار طريقة دفع أخرى.",
+        variant: "destructive",
+      })
+      return
+    }
+
+    // For credit card and available Apple Pay, proceed normally
+    setTimeout(() => {
+      setIsLoading(false)
+      // Redirect to success page
+      router.push("/checkout/success")
+      // Clear cart after successful checkout
+      clearCart()
+    }, 1500)
   }
 
-  const renderOtpVerification = () => {
+  if (items.length === 0) {
     return (
-      <div className="text-center">
-        <div className="bg-blue-100 rounded-full p-4 w-16 h-16 flex items-center justify-center mx-auto mb-4">
-          <Shield className="h-8 w-8 text-blue-900" />
-        </div>
-
-        <h2 className="text-xl font-bold mb-2">التحقق من الدفع</h2>
-        <p className="text-gray-600 mb-6">
-          لقد أرسلنا رمز التحقق إلى رقم هاتفك المسجل. يرجى إدخال الرمز لتأكيد عملية الدفع.
-        </p>
-
-        <div className="mb-6">
-          <OtpInput length={6} onComplete={setOtp} />
-        </div>
-
-        <div className="flex items-center justify-center text-sm mb-6">
-          <Clock className="h-4 w-4 ml-1 text-gray-500" />
-          <span className="text-gray-500">ينتهي الرمز خلال: 02:59</span>
-        </div>
-
-        <Button className="w-full" size="lg" onClick={handleOtpSubmit} disabled={isProcessing || otp.length !== 6}>
-          {isProcessing ? (
-            <span className="flex items-center">
-              <svg
-                className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                <path
-                  className="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                ></path>
-              </svg>
-              جاري التحقق...
-            </span>
-          ) : (
-            "تأكيد الرمز"
-          )}
-        </Button>
-
-        <p className="text-sm text-gray-500 mt-4">
-          لم تستلم الرمز؟ <button className="text-blue-900 hover:underline">إعادة إرسال</button>
-        </p>
-      </div>
-    )
-  }
-
-  const renderPaymentComplete = () => {
-    return (
-      <div className="text-center">
-        <div className="bg-green-100 rounded-full p-4 w-16 h-16 flex items-center justify-center mx-auto mb-4">
-          <Check className="h-8 w-8 text-green-600" />
-        </div>
-
-        <h2 className="text-xl font-bold mb-2">تمت عملية الدفع بنجاح</h2>
-        <p className="text-gray-600 mb-6">جاري تحويلك إلى صفحة تأكيد الطلب...</p>
-
-        <div className="flex justify-center">
-          <svg
-            className="animate-spin h-8 w-8 text-blue-900"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-            <path
-              className="opacity-75"
-              fill="currentColor"
-              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-            ></path>
-          </svg>
+      <div className="container mx-auto px-4 py-16 text-center">
+        <div className="max-w-md mx-auto">
+          <ShoppingCart className="h-16 w-16 mx-auto mb-4 text-gray-400" />
+          <h1 className="text-2xl font-bold mb-2">سلة التسوق فارغة</h1>
+          <p className="text-gray-600 mb-6">لم تقم بإضافة أي منتجات إلى سلة التسوق بعد.</p>
+          <Link href="/offers">
+            <Button>تصفح العروض</Button>
+          </Link>
         </div>
       </div>
     )
@@ -383,35 +121,336 @@ export default function PaymentPage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="flex items-center mb-6">
-        <Link href="/" className="text-blue-900 hover:underline flex items-center">
-          <ChevronRight className="h-4 w-4 ml-1" />
-          الرئيسية
-        </Link>
-        <span className="mx-2">/</span>
-        <Link href="/cart" className="text-blue-900 hover:underline">
-          سلة التسوق
-        </Link>
-        <span className="mx-2">/</span>
-        <Link href="/checkout" className="text-blue-900 hover:underline">
-          إتمام الطلب
-        </Link>
-        <span className="mx-2">/</span>
-        <span className="font-medium">الدفع</span>
+      <div className="text-center mb-8">
+        <h1 className="text-3xl font-bold mb-2">إتمام الطلب</h1>
+        <p className="text-gray-600">أنت على بعد خطوات قليلة من إتمام طلبك</p>
       </div>
 
-      <div className="max-w-2xl mx-auto">
-        <div className="bg-white rounded-lg shadow-sm border p-6">
-          {isComplete ? (
-            renderPaymentComplete()
-          ) : showOtp ? (
-            renderOtpVerification()
-          ) : (
-            <>
-              <h1 className="text-2xl font-bold mb-6 text-center">إتمام عملية الدفع</h1>
-              {renderPaymentForm()}
-            </>
+      <div className="flex justify-center mb-8">
+        <div className="flex items-center">
+          <div
+            className={`rounded-full h-10 w-10 flex items-center justify-center ${step >= 1 ? "bg-blue-900 text-white" : "bg-gray-200 text-gray-600"}`}
+          >
+            1
+          </div>
+          <div className={`h-1 w-16 ${step >= 2 ? "bg-blue-900" : "bg-gray-200"}`}></div>
+          <div
+            className={`rounded-full h-10 w-10 flex items-center justify-center ${step >= 2 ? "bg-blue-900 text-white" : "bg-gray-200 text-gray-600"}`}
+          >
+            2
+          </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="lg:col-span-2">
+          {step === 1 && (
+            <div className="bg-white rounded-lg shadow-sm border p-6 mb-8">
+              <h2 className="text-xl font-bold mb-6">معلومات الشحن</h2>
+
+              <form onSubmit={handleShippingSubmit}>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                  <div>
+                    <Label htmlFor="fullName">الاسم الكامل</Label>
+                    <Input
+                      id="fullName"
+                      value={shippingInfo.fullName}
+                      onChange={(e) => setShippingInfo({ ...shippingInfo, fullName: e.target.value })}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="phone">رقم الهاتف</Label>
+                    <Input
+                      id="phone"
+                      type="tel"
+                      value={shippingInfo.phone}
+                      onChange={(e) => setShippingInfo({ ...shippingInfo, phone: e.target.value })}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="email">البريد الإلكتروني</Label>
+                    <Input
+                      id="email"
+                      type="email"
+                      value={shippingInfo.email}
+                      onChange={(e) => setShippingInfo({ ...shippingInfo, email: e.target.value })}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="city">المدينة</Label>
+                    <Input
+                      id="city"
+                      value={shippingInfo.city}
+                      onChange={(e) => setShippingInfo({ ...shippingInfo, city: e.target.value })}
+                      required
+                    />
+                  </div>
+                  <div className="md:col-span-2">
+                    <Label htmlFor="address">العنوان</Label>
+                    <Input
+                      id="address"
+                      value={shippingInfo.address}
+                      onChange={(e) => setShippingInfo({ ...shippingInfo, address: e.target.value })}
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <h3 className="font-bold">طريقة الشحن</h3>
+                  <RadioGroup defaultValue="standard" className="space-y-3">
+                    <div className="flex items-start p-3 border rounded-lg">
+                      <RadioGroupItem value="standard" id="standard-shipping" className="mt-1 ml-2" />
+                      <Label htmlFor="standard-shipping" className="flex-1">
+                        <div className="font-medium">التوصيل القياسي</div>
+                        <div className="text-sm text-gray-600">2-3 أيام عمل</div>
+                        <div className="text-sm font-medium text-green-600 mt-1">مجاناً للطلبات فوق 20 د.ك</div>
+                      </Label>
+                      <div className="font-bold">2.000 د.ك</div>
+                    </div>
+
+                    <div className="flex items-start p-3 border rounded-lg">
+                      <RadioGroupItem value="express" id="express-shipping" className="mt-1 ml-2" />
+                      <Label htmlFor="express-shipping" className="flex-1">
+                        <div className="font-medium">التوصيل السريع</div>
+                        <div className="text-sm text-gray-600">خلال 24 ساعة</div>
+                      </Label>
+                      <div className="font-bold">5.000 د.ك</div>
+                    </div>
+                  </RadioGroup>
+                </div>
+
+                <div className="mt-8">
+                  <Button type="submit" className="w-full" size="lg" disabled={isLoading}>
+                    {isLoading ? "جاري المعالجة..." : "متابعة إلى الدفع"}
+                  </Button>
+                </div>
+              </form>
+            </div>
           )}
+
+          {step === 2 && (
+            <div className="bg-white rounded-lg shadow-sm border p-6 mb-8">
+              <h2 className="text-xl font-bold mb-6">طريقة الدفع</h2>
+
+              <form onSubmit={handlePaymentSubmit}>
+                <div className="mb-6">
+                  <RadioGroup
+                    defaultValue="card"
+                    value={paymentMethod}
+                    onValueChange={setPaymentMethod}
+                    className="space-y-3"
+                  >
+                    <div className="flex items-center p-3 border rounded-lg">
+                      <RadioGroupItem value="card" id="payment-card" className="ml-2" />
+                      <Label htmlFor="payment-card" className="flex items-center">
+                        <CreditCard className="h-5 w-5 ml-2" />
+                        <span>بطاقة ائتمان</span>
+                      </Label>
+                      <div className="flex ml-auto gap-2">
+                        <Image
+                          src="/visa.svg"
+                          alt="Visa"
+                          width={36}
+                          height={24}
+                          className="h-6 w-auto"
+                        />
+                        <Image
+                          src="/master.svg"
+                          alt="Mastercard"
+                          width={36}
+                          height={24}
+                          className="h-6 w-auto"
+                        />
+                        <Image
+                          src="/amex.svg"
+                          alt="Amex"
+                          width={36}
+                          height={24}
+                          className="h-6 w-auto"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="flex items-center p-3 border rounded-lg">
+                      <RadioGroupItem value="knet" id="payment-knet" className="ml-2" />
+                      <Label htmlFor="payment-knet" className="flex items-center">
+                        <img
+                          src="/knet.png"
+                          alt="KNET"
+                          width={36}
+                          height={24}
+                          className="h-6 w-auto ml-2"
+                        />
+                        <span>كي نت (KNET)</span>
+                      </Label>
+                    </div>
+
+                    <div className="flex items-center p-3 border rounded-lg">
+                      <RadioGroupItem value="apple" id="payment-apple" className="ml-2" />
+                      <Label htmlFor="payment-apple" className="flex items-center">
+                        <Image
+                          src="/applepay.svg"
+                          alt="Apple Pay"
+                          width={36}
+                          height={24}
+                          className="h-6 w-auto ml-2"
+                        />
+                        <span>ابل باي (Apple Pay)</span>
+                      </Label>
+                      {!isApplePayAvailable && (
+                        <div className="ml-auto">
+                          <span className="text-amber-600 text-sm flex items-center">
+                            <AlertTriangle className="h-4 w-4 ml-1" />
+                            غير متوفر على هذا الجهاز
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  </RadioGroup>
+                </div>
+
+                {paymentMethod === "card" && (
+                  <div className="space-y-4 mb-6">
+                    <div>
+                      <Label htmlFor="card-number">رقم البطاقة</Label>
+                      <Input id="card-number" placeholder="0000 0000 0000 0000" required />
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <Label htmlFor="expiry">تاريخ الانتهاء</Label>
+                        <Input id="expiry" placeholder="MM/YY" required />
+                      </div>
+                      <div>
+                        <Label htmlFor="cvv">رمز الأمان (CVV)</Label>
+                        <Input id="cvv" placeholder="123" required />
+                      </div>
+                    </div>
+                    <div>
+                      <Label htmlFor="card-name">الاسم على البطاقة</Label>
+                      <Input id="card-name" required />
+                    </div>
+                    <div className="flex items-center text-green-600 mt-2">
+                      <Shield className="h-4 w-4 ml-1" />
+                      <span className="text-sm">جميع المعاملات مؤمنة ومشفرة</span>
+                    </div>
+                  </div>
+                )}
+
+                {paymentMethod === "knet" && (
+                  <Alert className="bg-blue-50 border-blue-200 text-blue-800 mb-6">
+                    <AlertDescription>سيتم تحويلك إلى بوابة الدفع KNET لإتمام عملية الدفع بشكل آمن.</AlertDescription>
+                  </Alert>
+                )}
+
+                {paymentMethod === "apple" && (
+                  <>
+                    {isApplePayAvailable ? (
+                      <div className="text-center mb-6">
+                        <Button className="w-full bg-black hover:bg-gray-800 text-white h-12">
+                          <Image
+                            src="/placeholder.svg?height=24&width=60"
+                            alt="Apple Pay"
+                            width={60}
+                            height={24}
+                            className="h-6 w-auto"
+                          />
+                        </Button>
+                        <p className="text-sm text-gray-600 mt-2">سيتم تأكيد الدفع باستخدام بصمة الإصبع أو Face ID</p>
+                      </div>
+                    ) : (
+                      <Alert className="bg-amber-50 border-amber-200 text-amber-800 mb-6">
+                        <AlertDescription>
+                          خدمة Apple Pay غير متوفرة على هذا الجهاز. يرجى اختيار طريقة دفع أخرى.
+                        </AlertDescription>
+                      </Alert>
+                    )}
+                  </>
+                )}
+
+                <div className="flex justify-between mt-8">
+                  <Button type="button" variant="outline" onClick={() => setStep(1)} className="flex items-center">
+                    <ArrowRight className="h-4 w-4 ml-2" />
+                    العودة
+                  </Button>
+                  <Button
+                    type="submit"
+                    className="min-w-[150px]"
+                    disabled={isLoading || (paymentMethod === "apple" && !isApplePayAvailable)}
+                  >
+                    {isLoading ? "جاري المعالجة..." : "إتمام الطلب"}
+                  </Button>
+                </div>
+              </form>
+            </div>
+          )}
+        </div>
+
+        <div className="lg:col-span-1">
+          <div className="bg-white rounded-lg shadow-sm border p-6 sticky top-20">
+            <h2 className="text-xl font-bold mb-4">ملخص الطلب</h2>
+
+            <div className="space-y-4 mb-4">
+              {items.map((item) => (
+                <div key={item.id} className="flex gap-3 py-2 border-b last:border-0">
+                  <div className="w-16 h-16 flex-shrink-0">
+                    <img
+                      src={item.image || "/placeholder.svg"}
+                      alt={item.name}
+                      width={64}
+                      height={64}
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-medium text-sm">{item.name}</h3>
+                    <div className="flex items-center mt-1">
+                      <span className="text-sm">
+                        {item.quantity} x {item.price} د.ك
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <Separator className="my-4" />
+
+            <div className="space-y-3 mb-4">
+              <div className="flex justify-between">
+                <span>المجموع الفرعي</span>
+                <span>{subtotal.toFixed(2)} د.ك</span>
+              </div>
+              <div className="flex justify-between">
+                <span>رسوم الشحن</span>
+                <span>2.000 د.ك</span>
+              </div>
+              <Separator className="my-2" />
+              <div className="flex justify-between font-bold text-lg">
+                <span>الإجمالي</span>
+                <span>{(subtotal + 2).toFixed(2)} د.ك</span>
+              </div>
+            </div>
+
+            {step === 2 && (
+              <div className="bg-green-50 border border-green-200 rounded-lg p-3 mt-4">
+                <div className="flex items-start">
+                  <Check className="h-5 w-5 text-green-600 ml-2 mt-0.5" />
+                  <div>
+                    <p className="font-medium text-green-800">معلومات الشحن</p>
+                    <p className="text-sm text-gray-700 mt-1">{shippingInfo.fullName}</p>
+                    <p className="text-sm text-gray-700">
+                      {shippingInfo.address}, {shippingInfo.city}
+                    </p>
+                    <p className="text-sm text-gray-700">{shippingInfo.phone}</p>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

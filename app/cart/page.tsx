@@ -87,7 +87,7 @@ export default function CartPage() {
                 <div key={item.id} className="p-4">
                   <div className="flex gap-4">
                     <div className="w-20 h-20 flex-shrink-0">
-                      <Image
+                      <img
                         src={item.image || "/placeholder.svg"}
                         alt={item.name}
                         width={80}

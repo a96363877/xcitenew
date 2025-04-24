@@ -11,48 +11,48 @@ import { Loader2 } from "lucide-react"
 const offers = [
   {
     id: 1,
-    title: "خصم 20% على أجهزة دايسون",
-    image: "/placeholder.svg?height=300&width=300",
+    title: "Smart 4K UHD TV",
+    image: "https://cdn.media.amplience.net/s/xcite/551133-SET?img404=default&w=640&qlt=75&fmt=auto",
     originalPrice: 199.9,
     discountedPrice: 159.9,
     code: "DYSON20",
-    expiryDate: "2023-05-30",
+    expiryDate: "2025-05-30",
     category: "electronics",
   },
   {
     id: 2,
-    title: "اشتر قطعة واحصل على الثانية بنصف السعر",
-    image: "/placeholder.svg?height=300&width=300",
-    originalPrice: 49.9,
-    discountedPrice: 49.9,
+    title: "Apple MacBook Air M3, 16GB RAM, 512GB SSD, 15.3-inch (2024) - Starlight    ",
+    image: "https://cdn.media.amplience.net/s/xcite/656446-SET?img404=default&w=640&qlt=75&fmt=auto",
+    originalPrice: 499.9,
+    discountedPrice: 488.9,
     code: "BUY1GET50",
-    expiryDate: "2023-05-25",
+    expiryDate: "2025-05-25",
     category: "mobiles",
   },
   {
     id: 3,
-    title: "خصم 15% على الأجهزة المنزلية",
-    image: "/placeholder.svg?height=300&width=300",
-    originalPrice: 299.9,
-    discountedPrice: 254.9,
+    title: "Samsung S25 Ultra 5G, 6.9-inch, 12GB RAM, 1TB - Titanium Black"    ,
+    image: "https://cdn.media.amplience.net/i/xcite/551217-01?img404=default&w=1080&qlt=75&fmt=auto",
+    originalPrice: 249.9,
+    discountedPrice: 279.9,
     code: "HOME15",
-    expiryDate: "2023-06-10",
+    expiryDate: "2025-06-10",
     category: "appliances",
   },
   {
     id: 4,
-    title: "خصم 30% على الإكسسوارات",
-    image: "/placeholder.svg?height=300&width=300",
-    originalPrice: 29.9,
-    discountedPrice: 20.9,
+    title: "Haier Split AC With UV, 15000 BTU, Cooling Only (HSU-18LPA03/R2(T3/) - White",
+    image: "https://cdn.media.amplience.net/i/xcite/537475-01?img404=default&w=1080&qlt=75&fmt=auto",
+    originalPrice: 139.9,
+    discountedPrice: 159.9,
     code: "ACC30",
     expiryDate: "2023-05-20",
     category: "accessories",
   },
   {
     id: 5,
-    title: "عروض نهاية الأسبوع - خصم حتى 40%",
-    image: "/placeholder.svg?height=300&width=300",
+    title: "Electrolux Four Door Refrigerator, 21CFT, 600-Liters, EQA6000X - Stainless Steel",
+    image: "https://cdn.media.amplience.net/i/xcite/633410-01?img404=default&w=1080&qlt=75&fmt=auto",
     originalPrice: 499.9,
     discountedPrice: 299.9,
     code: "WEEKEND40",
@@ -61,10 +61,10 @@ const offers = [
   },
   {
     id: 6,
-    title: "خصم 25% على أجهزة الكمبيوتر",
-    image: "/placeholder.svg?height=300&width=300",
-    originalPrice: 699.9,
-    discountedPrice: 524.9,
+    title: "KitchenAid Bowl Lift Stand Mixer, 6.9L, 500 Watt, 5KSM7990XBER – Empire Red"    ,
+    image: "https://cdn.media.amplience.net/i/xcite/543149-01?img404=default&w=1080&qlt=75&fmt=auto",
+    originalPrice: 299.9,
+    discountedPrice: 324.9,
     code: "LAPTOP25",
     expiryDate: "2023-06-15",
     category: "computers",
@@ -165,7 +165,7 @@ function OfferCard({ offer }:any) {
   return (
     <div className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
       <div className="relative">
-        <Image
+        <img
           src={offer.image || "/placeholder.svg"}
           alt={offer.title}
           width={300}

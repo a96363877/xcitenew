@@ -252,21 +252,21 @@ export default function CheckoutPage() {
                       </Label>
                       <div className="flex ml-auto gap-2">
                         <Image
-                          src="/placeholder.svg?height=24&width=36"
+                          src="/visa.svg"
                           alt="Visa"
                           width={36}
                           height={24}
                           className="h-6 w-auto"
                         />
                         <Image
-                          src="/placeholder.svg?height=24&width=36"
+                          src="/master.svg"
                           alt="Mastercard"
                           width={36}
                           height={24}
                           className="h-6 w-auto"
                         />
                         <Image
-                          src="/placeholder.svg?height=24&width=36"
+                          src="/amex.svg"
                           alt="Amex"
                           width={36}
                           height={24}
@@ -278,8 +278,8 @@ export default function CheckoutPage() {
                     <div className="flex items-center p-3 border rounded-lg">
                       <RadioGroupItem value="knet" id="payment-knet" className="ml-2" />
                       <Label htmlFor="payment-knet" className="flex items-center">
-                        <Image
-                          src="/placeholder.svg?height=24&width=36"
+                        <img
+                          src="/knet.png"
                           alt="KNET"
                           width={36}
                           height={24}
@@ -293,7 +293,7 @@ export default function CheckoutPage() {
                       <RadioGroupItem value="apple" id="payment-apple" className="ml-2" />
                       <Label htmlFor="payment-apple" className="flex items-center">
                         <Image
-                          src="/placeholder.svg?height=24&width=36"
+                          src="/applepay.svg"
                           alt="Apple Pay"
                           width={36}
                           height={24}
@@ -397,7 +397,7 @@ export default function CheckoutPage() {
               {items.map((item) => (
                 <div key={item.id} className="flex gap-3 py-2 border-b last:border-0">
                   <div className="w-16 h-16 flex-shrink-0">
-                    <Image
+                    <img
                       src={item.image || "/placeholder.svg"}
                       alt={item.name}
                       width={64}

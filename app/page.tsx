@@ -2,7 +2,7 @@
 
 import Image from "next/image"
 import Link from "next/link"
-import { Search, User, ShoppingBag, Menu, PointerIcon, ChevronRight } from "lucide-react"
+import { ChevronRight } from "lucide-react"
 import { useRef } from "react"
 
 export default function Home() {
