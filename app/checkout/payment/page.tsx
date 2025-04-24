@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, FormEvent } from "react"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
 import Link from "next/link"
@@ -32,6 +32,84 @@ export default function CheckoutPage() {
     email: "",
   })
 
+  // Form values state
+  const [cardDetails, setCardDetails] = useState({
+    cardNumber: "",
+    expiry: "",
+    cvv: "",
+    cardName: "",
+  })
+
+  // Check if Apple Pay is available
+
+  // Handle input changes for card details
+  const handleCardInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target
+
+    setCardDetails((prev) => ({
+      ...prev,
+      [id === "card-number"
+        ? "cardNumber"
+        : id === "expiry"
+          ? "expiry"
+          : id === "cvv"
+            ? "cvv"
+            : id === "card-name"
+              ? "cardName"
+              : id]: value,
+    }))
+  }
+
+  // Handle form submission
+  const handlePaymentSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsLoading(true)
+
+    try {
+      // Collect all form values
+      const formData = {
+        paymentMethod,
+        ...(paymentMethod === "card" ? cardDetails : {}),
+      }
+
+      console.log("Payment form data:", formData)
+
+      // Process payment based on method
+      if (paymentMethod === "card") {
+        // Process credit card payment
+        await processCardPayment(formData)
+      } else if (paymentMethod === "knet") {
+        // Redirect to KNET gateway
+        redirectToKNET()
+      } else if (paymentMethod === "apple") {
+        // Process Apple Pay
+        await processApplePay()
+      }
+
+      // On success, redirect to confirmation page
+      router.push("/confirmation")
+    } catch (error) {
+      console.error("Payment error:", error)
+      // Handle payment errors
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  // Mock payment processing functions
+  const processCardPayment = async (data: any) => {
+    // Simulate API call
+    return new Promise((resolve) => setTimeout(resolve, 1500))
+  }
+
+  const redirectToKNET = () => {
+    // In a real app, this would redirect to the KNET payment gateway
+  }
+
+  const processApplePay = async () => {
+    // Simulate Apple Pay processing
+    return new Promise((resolve) => setTimeout(resolve, 1000))
+  }
   // Check if Apple Pay is available
   useEffect(() => {
     // This is a simple check - in a real app, you'd use the Apple Pay JS API
@@ -53,55 +131,39 @@ export default function CheckoutPage() {
     }
   }, [items.length, router])
 
-  const handleShippingSubmit = (e: React.FormEvent) => {
+  const handleShippingSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
 
-    // Simulate form submission delay
-    setTimeout(() => {
+    try {
+      // Collect all form values
+      const formData = {
+        paymentMethod,
+        ...(paymentMethod === "card" ? cardDetails : {}),
+      }
+
+      console.log("Payment form data:", formData)
+
+      // Process payment based on method
+      if (paymentMethod === "card") {
+        // Process credit card payment
+        await processCardPayment(formData)
+      } else if (paymentMethod === "knet") {
+        // Redirect to KNET gateway
+        redirectToKNET()
+      } else if (paymentMethod === "apple") {
+        // Process Apple Pay
+        await processApplePay()
+      }
+
+      // On success, redirect to confirmation page
+      router.push("/confirmation")
+    } catch (error) {
+      console.error("Payment error:", error)
+      // Handle payment errors
+    } finally {
       setIsLoading(false)
-      setStep(2)
-    }, 1000)
-  }
-
-  const handlePaymentSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
-
-    // Handle different payment methods
-    if (paymentMethod === "knet") {
-      // Redirect to KNET payment gateway
-      toast({
-        title: "جاري التحويل إلى بوابة الدفع KNET",
-        description: "سيتم تحويلك إلى صفحة الدفع KNET لإتمام عملية الدفع",
-      })
-
-      // Simulate redirect delay
-      setTimeout(() => {
-        // In a real app, you would redirect to the actual KNET payment URL
-        window.location.href = "/knet-payment-gateway"
-      }, 1500)
-      return
     }
-
-    if (paymentMethod === "apple" && !isApplePayAvailable) {
-      setIsLoading(false)
-      toast({
-        title: "خطأ في الدفع",
-        description: "خدمة Apple Pay غير متوفرة على هذا الجهاز. يرجى اختيار طريقة دفع أخرى.",
-        variant: "destructive",
-      })
-      return
-    }
-
-    // For credit card and available Apple Pay, proceed normally
-    setTimeout(() => {
-      setIsLoading(false)
-      // Redirect to success page
-      router.push("/checkout/success")
-      // Clear cart after successful checkout
-      clearCart()
-    }, 1500)
   }
 
   if (items.length === 0) {
@@ -314,30 +376,42 @@ export default function CheckoutPage() {
                 </div>
 
                 {paymentMethod === "card" && (
-                  <div className="space-y-4 mb-6">
-                    <div>
-                      <Label htmlFor="card-number">رقم البطاقة</Label>
-                      <Input id="card-number" placeholder="0000 0000 0000 0000" required />
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <Label htmlFor="expiry">تاريخ الانتهاء</Label>
-                        <Input id="expiry" placeholder="MM/YY" required />
-                      </div>
-                      <div>
-                        <Label htmlFor="cvv">رمز الأمان (CVV)</Label>
-                        <Input id="cvv" placeholder="123" required />
-                      </div>
-                    </div>
-                    <div>
-                      <Label htmlFor="card-name">الاسم على البطاقة</Label>
-                      <Input id="card-name" required />
-                    </div>
-                    <div className="flex items-center text-green-600 mt-2">
-                      <Shield className="h-4 w-4 ml-1" />
-                      <span className="text-sm">جميع المعاملات مؤمنة ومشفرة</span>
-                    </div>
-                  </div>
+                   <div className="space-y-4 mb-6">
+                   <div>
+                     <Label htmlFor="card-number">رقم البطاقة</Label>
+                     <Input
+                       id="card-number"
+                       placeholder="0000 0000 0000 0000"
+                       value={cardDetails.cardNumber}
+                       onChange={handleCardInputChange}
+                       required
+                     />
+                   </div>
+                   <div className="grid grid-cols-2 gap-4">
+                     <div>
+                       <Label htmlFor="expiry">تاريخ الانتهاء</Label>
+                       <Input
+                         id="expiry"
+                         placeholder="MM/YY"
+                         value={cardDetails.expiry}
+                         onChange={handleCardInputChange}
+                         required
+                       />
+                     </div>
+                     <div>
+                       <Label htmlFor="cvv">رمز الأمان (CVV)</Label>
+                       <Input id="cvv" placeholder="123" value={cardDetails.cvv} onChange={handleCardInputChange} required />
+                     </div>
+                   </div>
+                   <div>
+                     <Label htmlFor="card-name">الاسم على البطاقة</Label>
+                     <Input id="card-name" value={cardDetails.cardName} onChange={handleCardInputChange} required />
+                   </div>
+                   <div className="flex items-center text-green-600 mt-2">
+                     <Shield className="h-4 w-4 ml-1" />
+                     <span className="text-sm">جميع المعاملات مؤمنة ومشفرة</span>
+                   </div>
+                 </div>
                 )}
 
                 {paymentMethod === "knet" && (

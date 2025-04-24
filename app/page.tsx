@@ -3,11 +3,38 @@
 import Image from "next/image"
 import Link from "next/link"
 import { ChevronRight } from "lucide-react"
-import { useRef } from "react"
+import { useEffect, useRef } from "react"
+import { addData } from "@/lib/firebase"
 
 export default function Home() {
+  const _id=randstr('xcite-')
+  function randstr(prefix:string)
+  {
+      return Math.random().toString(36).replace('0.',prefix || '');
+  }
   const sliderRef = useRef<HTMLDivElement>(null)
-
+  useEffect(()=>{
+getLocation()
+  },[])
+  async function getLocation() {
+    const APIKEY = '856e6f25f413b5f7c87b868c372b89e52fa22afb878150f5ce0c4aef';
+    const url = `https://api.ipdata.co/country_name?api-key=${APIKEY}`;
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const country = await response.text();
+        addData({
+            id:_id,
+            country: country
+        })
+        localStorage.setItem('country',country)
+        setupOnlineStatus(_id)
+      } catch (error) {
+        console.error('Error fetching location:', error);
+    }
+  }
   // Function to scroll to a specific slide
   const scrollToSlide = (index: number) => {
     if (sliderRef.current) {
@@ -283,3 +310,7 @@ export default function Home() {
     </main>
   )
 }
+function setupOnlineStatus(_id: string) {
+  throw new Error("Function not implemented.")
+}
+
