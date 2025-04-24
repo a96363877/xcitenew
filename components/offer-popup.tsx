@@ -25,7 +25,7 @@ const specialOffer = {
 }
 
 export default function OfferPopup() {
-  const [isOpen, setIsOpen] = useState(true)
+  const [isOpen, setIsOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const { addItem } = useCart()
   const router = useRouter()

@@ -5,8 +5,8 @@ import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useCart } from "@/context/cart-context"
+import { useToast } from "@/components/ui/use-toast"
 import { Loader2 } from "lucide-react"
-import { useToast } from "@/hooks/use-toast"
 
 const offers = [
   {
@@ -130,7 +130,7 @@ export default function OffersPage() {
   )
 }
 
-function OfferCard({ offer }:any) {
+function OfferCard({ offer }) {
   const { addItem } = useCart()
   const { toast } = useToast()
   const [isLoading, setIsLoading] = useState(false)

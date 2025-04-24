@@ -1,85 +1,69 @@
+"use client"
+
+import type React from "react"
+
+import { useState, useEffect } from "react"
 import Link from "next/link"
-import { Search, ShoppingCart, User, Menu } from "lucide-react"
+import { Search, User, Menu, X, Heart, Phone, ChevronDown, ShoppingBag } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import CartIndicator from "@/components/cart-indicator"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { cn } from "@/lib/utils"
+import Image from "next/image"
+
+const categories = [
+  { name: "الإلكترونيات", href: "/categories/electronics" },
+  { name: "الهواتف والأجهزة اللوحية", href: "/categories/mobiles" },
+  { name: "أجهزة الكمبيوتر", href: "/categories/computers" },
+  { name: "الأجهزة المنزلية", href: "/categories/appliances" },
+  { name: "الألعاب", href: "/categories/gaming" },
+  { name: "العروض", href: "/offers" },
+]
 
 export default function Header() {
+  const [isScrolled, setIsScrolled] = useState(false)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [searchQuery, setSearchQuery] = useState("")
+
+  // Handle scroll effect
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10)
+    }
+
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault()
+    // Implement search functionality
+    console.log("Searching for:", searchQuery)
+  }
+
   return (
-    <header className="bg-[#00355f] shadow-sm sticky top-0 z-50 text-white">
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between py-2 ">
-          <div className="flex items-center space-x-4">
-            <Button variant="ghost" size="icon" className="md:hidden">
-              <Menu className="h-5 w-5" />
-            </Button>
-            <Link href="/" className="flex items-center">
-<img src="vercel.svg" alt="" width={70}/>          
-  </Link>
-          </div>
-
-          <div className="hidden md:flex flex-1 max-w-xl mx-4">
-            <div className="relative w-full">
-              <Input
-                type="search"
-                placeholder="ابحث عن المنتجات"
-                className="w-full pl-10 pr-4 rounded-md border-gray-300"
-              />
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-            </div>
-          </div>
-
-          <div className="flex items-center space-x-4">
-            <Button variant="ghost" size="sm" className="hidden md:flex">
-              English
-            </Button>
-            <Link href="/account">
-              <Button variant="ghost" size="icon">
-                <User className="h-5 w-5" />
-              </Button>
-            </Link>
-            <Link href="/cart">
-              <Button variant="ghost" size="icon">
-                <ShoppingCart className="h-5 w-5" />
-              </Button>
-            </Link>
+    <>
+       {/* Header */}
+       <header className="bg-[#0a3c7b] text-white p-3 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <Menu className="w-6 h-6" />
+          <Image src="/vercel.svg" alt="Xcite" width={80} height={24} className="h-6 w-auto" />
+        </div>
+        <div className="flex-1 max-w-md mx-4">
+          <div className="relative">
+            <input type="text" placeholder="Search Xcite..." className="w-full py-1 px-3 text-sm rounded text-black" />
+            <Search className="absolute right-2 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500" />
           </div>
         </div>
+        <div className="flex items-center gap-4">
+          <User className="w-5 h-5" />
+          <div className="relative">
+          <CartIndicator/>
+          </div>
+        </div>
+      </header>
 
-        <nav className="py-2">
-          <ul className="flex space-x-6 text-sm hidden">
-            <li>
-              <Link href="/" className="text-gray-700 hover:text-blue-900">
-                الرئيسية
-              </Link>
-            </li>
-            <li>
-              <Link href="/categories" className="text-gray-700 hover:text-blue-900">
-                الأقسام
-              </Link>
-            </li>
-            <li>
-              <Link href="/offers" className="text-gray-700 hover:text-blue-900">
-                العروض
-              </Link>
-            </li>
-            <li>
-              <Link href="/checkout" className="text-gray-700 hover:text-blue-900">
-                الدفع
-              </Link>
-            </li>
-            <li>
-              <Link href="/shipping" className="text-gray-700 hover:text-blue-900">
-                الشحن
-              </Link>
-            </li>
-            <li>
-              <Link href="/payment" className="text-gray-700 hover:text-blue-900">
-                طرق الدفع
-              </Link>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </header>
+    </>
   )
 }

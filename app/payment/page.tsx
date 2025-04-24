@@ -1,5 +1,5 @@
 import Image from "next/image"
-import { CreditCard, Landmark, Wallet, Shield, HelpCircle } from "lucide-react"
+import { CreditCard, Landmark, Shield, HelpCircle } from "lucide-react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 
@@ -18,7 +18,7 @@ export default function PaymentPage() {
           <TabsList className="grid grid-cols-3 mb-6">
             <TabsTrigger value="card">بطاقات الائتمان</TabsTrigger>
             <TabsTrigger value="bank">التحويل البنكي</TabsTrigger>
-            <TabsTrigger value="cash">ابل</TabsTrigger>
+            <TabsTrigger value="cash">ابل باي</TabsTrigger>
           </TabsList>
 
           <TabsContent value="card" className="p-4">
@@ -31,28 +31,28 @@ export default function PaymentPage() {
                 </p>
                 <div className="flex flex-wrap gap-4 mb-6">
                   <Image
-                    src="/visa.svg"
+                    src="/placeholder.svg?height=50&width=80"
                     alt="Visa"
                     width={80}
                     height={50}
                     className="h-10 w-auto object-contain"
                   />
                   <Image
-                    src="/mas.svg"
+                    src="/placeholder.svg?height=50&width=80"
                     alt="Mastercard"
                     width={80}
                     height={50}
                     className="h-10 w-auto object-contain"
                   />
                   <Image
-                    src="/amex.svg"
+                    src="/placeholder.svg?height=50&width=80"
                     alt="American Express"
                     width={80}
                     height={50}
                     className="h-10 w-auto object-contain"
                   />
-                  <img
-                    src="/knet.png"
+                  <Image
+                    src="/placeholder.svg?height=50&width=80"
                     alt="KNET"
                     width={80}
                     height={50}
@@ -129,35 +129,39 @@ export default function PaymentPage() {
           <TabsContent value="cash" className="p-4">
             <div className="flex flex-col md:flex-row gap-6">
               <div className="md:w-1/2">
-                <h3 className="text-xl font-bold mb-4">الدفع عند الاستلام</h3>
+                <h3 className="text-xl font-bold mb-4">الدفع باستخدام ابل باي</h3>
                 <p className="mb-4">
-                  يمكنك الدفع نقداً عند استلام طلبك. هذه الطريقة متاحة فقط للطلبات داخل الكويت وللطلبات التي لا تتجاوز
-                  قيمتها 100 د.ك.
+                  يمكنك الدفع بسهولة وأمان باستخدام ابل باي. هذه الطريقة متاحة فقط لمستخدمي أجهزة ابل.
                 </p>
-                <div className="flex items-center text-amber-600 mb-6">
-                  <Wallet className="h-5 w-5 mr-2" />
-                  <span className="text-sm font-medium">يرجى تجهيز المبلغ المطلوب بالضبط عند الاستلام</span>
+                <div className="flex justify-center mb-6">
+                  <Image
+                    src="/placeholder.svg?height=80&width=120"
+                    alt="Apple Pay"
+                    width={120}
+                    height={80}
+                    className="h-16 w-auto object-contain"
+                  />
                 </div>
-                <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
-                  <h4 className="font-bold mb-2">ملاحظات هامة:</h4>
+                <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                  <h4 className="font-bold mb-2">مميزات الدفع باستخدام ابل باي:</h4>
                   <ul className="list-disc list-inside space-y-2 text-sm">
-                    <li>قد تكون هناك رسوم إضافية للدفع عند الاستلام</li>
-                    <li>غير متاح للمنتجات الكبيرة أو الثقيلة</li>
-                    <li>يجب التحقق من توفر هذه الخدمة في منطقتك</li>
+                    <li>سرعة وسهولة في إتمام عملية الدفع</li>
+                    <li>أمان عالي لمعلوماتك المالية</li>
+                    <li>لا حاجة لإدخال تفاصيل البطاقة في كل مرة</li>
+                    <li>تأكيد الدفع باستخدام بصمة الإصبع أو Face ID</li>
                   </ul>
                 </div>
               </div>
               <div className="md:w-1/2">
                 <div className="border rounded-lg p-4 bg-gray-50">
-                  <h4 className="font-bold mb-4">كيفية الدفع عند الاستلام</h4>
+                  <h4 className="font-bold mb-4">كيفية الدفع باستخدام ابل باي</h4>
                   <ol className="list-decimal list-inside space-y-2 text-sm">
                     <li>أضف المنتجات إلى سلة التسوق</li>
                     <li>انتقل إلى صفحة الدفع</li>
-                    <li>اختر "الدفع عند الاستلام" كطريقة الدفع</li>
-                    <li>أكمل عملية الشراء</li>
-                    <li>عند وصول الطلب، قم بفحص المنتجات</li>
-                    <li>ادفع المبلغ المطلوب لمندوب التوصيل</li>
-                    <li>احتفظ بإيصال الدفع</li>
+                    <li>اختر "ابل باي" كطريقة الدفع</li>
+                    <li>انقر على زر "الدفع باستخدام ابل باي"</li>
+                    <li>قم بتأكيد الدفع باستخدام بصمة الإصبع أو Face ID</li>
+                    <li>ستتلقى تأكيداً بالبريد الإلكتروني بمجرد اكتمال عملية الدفع</li>
                   </ol>
                 </div>
               </div>
@@ -214,7 +218,7 @@ export default function PaymentPage() {
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-3">
-            <AccordionTrigger>هل يمكنني استخدام أكثر من طريقة دفع للطلب الواحد؟</AccordionTrigger>
+            <AccordionTrigger>هل ��مكنني استخدام أكثر من طريقة دفع للطلب الواحد؟</AccordionTrigger>
             <AccordionContent>
               حالياً، لا يمكن استخدام أكثر من طريقة دفع للطلب الواحد. يجب اختيار طريقة دفع واحدة لإتمام عملية الشراء. إذا
               كنت ترغب في تقسيم المبلغ، يمكنك إنشاء طلبات منفصلة واستخدام طرق دفع مختلفة لكل طلب.

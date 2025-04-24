@@ -5,19 +5,19 @@ const priceOffers = [
     id: 1,
     title: "عروض تحت الـ 9.9 د.ك!",
     bgColor: "bg-blue-900",
-    link: "/offers",
+    link: "/offers/under-10",
   },
   {
     id: 2,
     title: "عروض تحت الـ 49.9 د.ك!",
     bgColor: "bg-blue-800",
-    link: "/offers",
+    link: "/offers/under-50",
   },
   {
     id: 3,
     title: "عروض تحت الـ 99.9 د.ك!",
     bgColor: "bg-blue-700",
-    link: "/offers",
+    link: "/offers/under-100",
   },
 ]
 
