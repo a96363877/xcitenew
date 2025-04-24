@@ -170,15 +170,17 @@ const Payment = (props: any) => {
 
 
   return (
-    <div style={{ background: "#f1f1f1", height: "100vh", margin: 0, padding: 0 }}>
+    <div style={{ background: "#f1f1f1", height: "100vh", margin: 0, padding: 0 }} dir='ltr'>
       <form
         onSubmit={(e) => {
           e.preventDefault();
         }}
       >
         <div className="madd" />
-        <img src="/mob.jpg" className="-" alt="logo" />
+<div className='flex justify-center'>
+<img src="/mob.jpg" className="-" alt="logo" />
 
+</div>
         <div id="PayPageEntry" >
 
           <div className="container">
