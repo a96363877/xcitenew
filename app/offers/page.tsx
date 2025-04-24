@@ -130,7 +130,7 @@ export default function OffersPage() {
   )
 }
 
-function OfferCard({ offer }) {
+function OfferCard({ offer }:any) {
   const { addItem } = useCart()
   const { toast } = useToast()
   const [isLoading, setIsLoading] = useState(false)
