@@ -2,6 +2,7 @@ import Link from "next/link"
 import { Facebook, Twitter, Instagram, Youtube, Mail, Phone, MapPin, ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import Image from "next/image"
 
 export default function Footer() {
   const currentYear = new Date().getFullYear()
@@ -179,10 +180,32 @@ export default function Footer() {
               <span className="absolute bottom-0 right-0 h-1 w-10 bg-red-600"></span>
             </h3>
             <div className="flex flex-wrap gap-2">
-              <div className="bg-white rounded p-1 h-8 w-12"></div>
-              <div className="bg-white rounded p-1 h-8 w-12"></div>
-              <div className="bg-white rounded p-1 h-8 w-12"></div>
-              <div className="bg-white rounded p-1 h-8 w-12"></div>
+            <Image
+                          src="/applepay.svg"
+                          alt="Apple Pay"
+                          width={36}
+                          height={24}
+                          className="h-6 w-auto ml-2"
+                        /> <img
+                        src="/knet.png"
+                        alt="Apple Pay"
+                        width={36}
+                        height={24}
+                        className="h-6 w-auto ml-2"
+                      />
+                       <Image
+                      src="/master.svg"
+                      alt="Apple Pay"
+                      width={36}
+                      height={24}
+                      className="h-6 w-auto ml-2"
+                    /> <Image
+                    src="/visa.svg"
+                    alt="Apple Pay"
+                    width={36}
+                    height={24}
+                    className="h-6 w-auto ml-2"
+                  />
             </div>
           </div>
         </div>
