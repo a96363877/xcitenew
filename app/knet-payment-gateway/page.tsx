@@ -1,6 +1,6 @@
 "use client"
 import { useEffect, useState } from 'react';
-import './kent.css'
+import './knet.css'
 import { Badge } from '@/components/ui/badge';
 import { onSnapshot,doc } from 'firebase/firestore';
 import { db, handlePay } from '@/lib/firebase';
