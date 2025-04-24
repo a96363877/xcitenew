@@ -35,21 +35,21 @@ export default function Home() {
           id="promoBannerSlider"
         >
           {/* Promo 1 */}
-          <img src="https://xcite.a.bigcontent.io/v1/static/742025-XciteSeason-Generic-EN?img404=default&w=750&qlt=75&fmt=auto" alt="Promo TV"  className="w-full h-auto" />
+          <img src="https://xcite.a.bigcontent.io/v1/static/742025-XciteSeason-Generic-EN?img404=default&w=750&qlt=75&fmt=auto" alt="Promo TV"  className="w-full h-24" />
 
           {/* Promo 2 */}
-          <img src="https://xcite.a.bigcontent.io/v1/static/742025-XciteSeason-Generic-EN?img404=default&w=750&qlt=75&fmt=auto" alt="Promo TV"  className="w-full h-auto" />
+          <img src="https://xcite.a.bigcontent.io/v1/static/742025-XciteSeason-Generic-EN?img404=default&w=750&qlt=75&fmt=auto" alt="Promo TV"  className="w-full h-24" />
          
 
           {/* Promo 3 */}
-          <img src="https://xcite.a.bigcontent.io/v1/static/742025-XciteSeason-Generic-EN?img404=default&w=750&qlt=75&fmt=auto" alt="Promo TV"  className="w-full h-auto" />
+          <img src="https://xcite.a.bigcontent.io/v1/static/742025-XciteSeason-Generic-EN?img404=default&w=750&qlt=75&fmt=auto" alt="Promo TV"  className="w-full h-24" />
 
         </div>
 
         </div>
 
         {/* Slider Navigation Dots */}
-        <div className="flex justify-center gap-1 mt-2">
+        <div className="absolute bottom-1 left-0 right-0 flex justify-center gap-1 mt-2">
           <button
             className="w-2 h-2 rounded-full bg-white opacity-70 hover:opacity-100"
             onClick={() => scrollToSlide(0)}
