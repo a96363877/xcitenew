@@ -2,7 +2,7 @@
 
 import Image from "next/image"
 import Link from "next/link"
-import { Search, User, ShoppingBag, Menu, PointerIcon } from "lucide-react"
+import { Search, User, ShoppingBag, Menu, PointerIcon, ChevronRight } from "lucide-react"
 import { useRef } from "react"
 
 export default function Home() {
@@ -212,6 +212,74 @@ export default function Home() {
           </div>
         </Link>
       </section>
+      <section className="flex flex-col">
+        {/* Deal Category 1 */}
+        <div className="bg-gradient-to-r from-[#003366] to-[#0099cc] text-white py-3 px-4 text-center font-bold text-xl border-b border-white">
+          DEALS BELOW 9.9 KD!
+        </div>
+
+        {/* Deal Category 2 */}
+        <div className="bg-gradient-to-r from-[#003366] to-[#0099cc] text-white py-3 px-4 text-center font-bold text-xl border-b border-white">
+          DEALS BELOW 49.9 KD!
+        </div>
+
+        {/* Deal Category 3 */}
+        <div className="bg-gradient-to-r from-[#003366] to-[#0099cc] text-white py-3 px-4 text-center font-bold text-xl">
+          DEALS BELOW 99.9 KD!
+        </div>
+      </section>
+
+      {/* Hero Picks Section */}
+      <section className="bg-white p-3">
+        <div className="flex items-center justify-between mb-2">
+          <h2 className="font-bold text-lg">Hero Picks</h2>
+          <Link href="#" className="text-[#0a3c7b] text-sm flex items-center">
+            View all <ChevronRight className="w-4 h-4" />
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-3 gap-2">
+          {/* Product 1 */}
+          <Link href="#" className="flex flex-col items-center">
+            <div className="relative w-full aspect-square mb-1">
+              <img src="https://cdn.media.amplience.net/s/xcite/551133-SET?img404=default&w=640&qlt=75&fmt=auto" alt="Smart TV"  className="object-contain" />
+            </div>
+            <div className="text-center w-full">
+              <div className="text-xs line-clamp-2 h-8">Smart 4K UHD TV 55"</div>
+              <div className="text-sm font-bold text-[#0a3c7b]">199.900 KD</div>
+              <div className="text-xs line-through text-gray-500">229.900 KD</div>
+              <div className="bg-red-600 text-white text-xs rounded w-full mt-1">SAVE</div>
+            </div>
+          </Link>
+
+          {/* Product 2 */}
+          <Link href="#" className="flex flex-col items-center">
+            <div className="relative w-full aspect-square mb-1">
+              <img src="https://cdn.media.amplience.net/s/xcite/546461-SET?img404=default&w=640&qlt=75&fmt=auto" alt="Massage Chair" className="object-contain" />
+            </div>
+            <div className="text-center w-full">
+              <div className="text-xs line-clamp-2 h-8">Rest Massage Chair 3D</div>
+              <div className="text-sm font-bold text-[#0a3c7b]">369.000 KD</div>
+              <div className="text-xs line-through text-gray-500">399.000 KD</div>
+              <div className="bg-red-600 text-white text-xs rounded w-full mt-1">SAVE</div>
+            </div>
+          </Link>
+
+          {/* Product 3 */}
+          <Link href="#" className="flex flex-col items-center">
+            <div className="relative w-full aspect-square mb-1">
+              <img src="https://cdn.media.amplience.net/s/xcite/551227-SET?img404=default&w=640&qlt=75&fmt=auto" alt="Tablet"  className="object-contain" />
+            </div>
+            <div className="text-center w-full">
+              <div className="text-xs line-clamp-2 h-8">Galaxy Tab S9 Ultra</div>
+              <div className="text-sm font-bold text-[#0a3c7b]">249.900 KD</div>
+              <div className="text-xs line-through text-gray-500">279.900 KD</div>
+              <div className="bg-red-600 text-white text-xs rounded w-full mt-1">SAVE</div>
+            </div>
+          </Link>
+        </div>
+      </section>
+
     </main>
   )
 }
