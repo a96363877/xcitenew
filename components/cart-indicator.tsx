@@ -6,6 +6,7 @@ import { useCart } from "@/context/cart-context"
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
 import { useState, useEffect } from "react"
+import Link from "next/link"
 
 export default function CartIndicator() {
   const { totalItems } = useCart()
@@ -23,6 +24,7 @@ export default function CartIndicator() {
   }, [totalItems, prevTotalItems])
 
   return (
+    <Link href={'/cart'}>
     <Button variant="ghost" size="icon" className="relative">
       <ShoppingCart className={cn("h-5 w-5", isAnimating && "text-blue-600")} />
       {totalItems > 0 && (
@@ -36,5 +38,6 @@ export default function CartIndicator() {
         </Badge>
       )}
     </Button>
+    </Link>
   )
 }
