@@ -14,18 +14,18 @@ import { toast } from "@/components/ui/use-toast"
 // Special offer product data
 const specialOffer = {
   id: "special-offer-iphone16",
-  name: "iPhone 16 Plus - عرض خاص",
-  description: "احصل على خصم 15% على iPhone 16 Plus الجديد",
-  price: 399.9,
-  originalPrice: 469.9,
+  name: "مكيف هواء سبليت هايسنس، 14400 وحدة حرارية بريطانية، AS-18CT4SXATG01S – ابيض",
+  description: "Information on Hisense Split Air Conditioner, 14400 BTU, AS-18CT4SXATG01S – White  ",
+  price: 139.9,
+  originalPrice: 150.9,
   discount: 15,
-  image: "/0069289_iphone-16-plus.webp",
+  image: "/mkff.webp",
   code: "WELCOME15",
   expiryDate: "2024-05-30",
 }
 
 export default function OfferPopup() {
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(true)
   const [isLoading, setIsLoading] = useState(false)
   const { addItem } = useCart()
   const router = useRouter()
