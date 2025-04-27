@@ -16,12 +16,12 @@ const specialOffer = {
   id: "special-offer-iphone16",
   name: "مكيف هواء سبليت هايسنس، 14400 وحدة حرارية بريطانية، AS-18CT4SXATG01S – ابيض",
   description: "Information on Hisense Split Air Conditioner, 14400 BTU, AS-18CT4SXATG01S – White  ",
-  price: 139.9,
+  price: 99.9,
   originalPrice: 150.9,
-  discount: 15,
+  discount: 25,
   image: "/mkkf.webp",
   code: "WELCOME15",
-  expiryDate: "2024-05-30",
+  expiryDate: "2025-05-30",
 }
 
 export default function OfferPopup() {
@@ -131,7 +131,7 @@ export default function OfferPopup() {
                       transition={{ delay: 0.3, duration: 0.4, type: "spring" }}
                       className="absolute -top-2 -right-2 bg-red-600 text-white text-sm font-bold rounded-full w-16 h-16 flex items-center justify-center rotate-12"
                     >
-                      <span>-15%</span>
+                      <span>-25%</span>
                     </motion.div>
                   </div>
                 </motion.div>
