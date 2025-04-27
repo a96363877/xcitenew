@@ -351,27 +351,7 @@ export default function CheckoutPage() {
                       </Label>
                     </div>
 
-                    <div className="flex items-center p-3 border rounded-lg">
-                      <RadioGroupItem value="apple" id="payment-apple" className="ml-2" />
-                      <Label htmlFor="payment-apple" className="flex items-center">
-                        <Image
-                          src="/applepay.svg"
-                          alt="Apple Pay"
-                          width={36}
-                          height={24}
-                          className="h-6 w-auto ml-2"
-                        />
-                        <span>ابل باي (Apple Pay)</span>
-                      </Label>
-                      {!isApplePayAvailable && (
-                        <div className="ml-auto">
-                          <span className="text-amber-600 text-sm flex items-center">
-                            <AlertTriangle className="h-4 w-4 ml-1" />
-                            غير متوفر على هذا الجهاز
-                          </span>
-                        </div>
-                      )}
-                    </div>
+                
                   </RadioGroup>
                 </div>
 
