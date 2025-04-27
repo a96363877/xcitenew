@@ -7,6 +7,7 @@ import { Toaster } from "@/components/ui/toaster"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
 import Script from "next/script"
+import OfferPopup from "@/components/offer-popup"
 
 // Use Cairo font for better Arabic support
 const cairo = Cairo({
@@ -37,6 +38,7 @@ export default function RootLayout({
           <main className="flex-grow ">{children}</main>
           <Footer/>
           <Toaster />
+          <OfferPopup/>
         </CartProvider>
         <Script src={`https://www.googletagmanager.com/gtag/js?id=AW-17036437498`} strategy="afterInteractive" />
         <Script id="google-analytics" strategy="afterInteractive">

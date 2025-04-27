@@ -19,7 +19,7 @@ const specialOffer = {
   price: 139.9,
   originalPrice: 150.9,
   discount: 15,
-  image: "/mkff.webp",
+  image: "/mkkf.webp",
   code: "WELCOME15",
   expiryDate: "2024-05-30",
 }
@@ -36,11 +36,14 @@ export default function OfferPopup() {
     const hasShownPopup = localStorage.getItem("hasShownOfferPopup")
 
     if (!hasShownPopup) {
-      // Show popup after 3 seconds
+      // Show popup immediately for first-time visitors
+      setIsOpen(true)
+      // Set flag in localStorage to avoid showing again in the same session
+      localStorage.setItem("hasShownOfferPopup", "true")
+    } else {
+      // For returning visitors, show popup after 3 seconds
       const timer = setTimeout(() => {
         setIsOpen(true)
-        // Set flag in localStorage to avoid showing again in the same session
-        localStorage.setItem("hasShownOfferPopup", "true")
       }, 3000)
 
       return () => clearTimeout(timer)
@@ -115,7 +118,7 @@ export default function OfferPopup() {
                   className="relative"
                 >
                   <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 relative overflow-hidden">
-                    <Image
+                    <img
                       src={specialOffer.image || "/placeholder.svg"}
                       alt="iPhone 16 Plus"
                       width={240}
